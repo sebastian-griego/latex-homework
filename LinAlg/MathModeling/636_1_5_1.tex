@@ -1,0 +1,103 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usepackage{float}
+\usepackage{graphicx}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\RR}{\mathbb{R}}
+\DeclareMathOperator{\rng}{rng}
+
+% Page setup
+\setlength{\headheight}{15pt}
+\geometry{letterpaper, margin=1in}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textbf{Sebastian Griego}}  % Replace with your name
+\fancyhead[C]{\textbf{Math Modeling}}  % Replace with your course name
+\fancyhead[R]{\textbf{Assignment \#1}}  % Replace with your assignment number
+\fancyfoot[C]{\thepage}
+
+\newenvironment{problem}[1]{
+\textbf{Problem #1:}
+}{
+\rmfamily \vspace{1em}
+}
+
+\newenvironment{solution}{
+\textbf{Solution:}
+
+}{
+
+\vspace{2em}
+}
+
+\begin{document}
+
+\title{Homework \#1}  % Replace with the homework number
+\author{Sebastian Griego}  % Replace with your name
+
+\begin{problem}{5.1}
+    Consider the following model equation
+    \[
+        \begin{aligned}
+            \frac{\partial y}{\partial t} &= D\frac{\partial^2 y}{\partial x^2} + \gamma y^3 \\
+            y(x,0) &= 0, \: 0 < x < \infty \\
+            y(0,t) &= y_0, \: t > 0, \: y(\infty, t) = 0, \: t > 0
+        \end{aligned}
+    \]
+    Write the dimensions of each variable, parameter, and term in the equation.
+\end{problem}
+
+\begin{solution}
+    \[
+        \begin{aligned}
+            t &= [T] \\
+            x &= [L] \\
+            y &= [Y] \\
+        \end{aligned}
+    \]
+    Dimensions of Left Side:
+    \[
+        \left[ \frac{\partial y}{\partial t} \right] = \frac{[Y]}{[T]}
+    \]
+    
+    Dimensions of Right Side:
+    \[
+        \left[ D \frac{\partial^2 y}{\partial x^2} + \gamma y^3  \right] = [D] \cdot \frac{[Y]}{[L]^2} + [\gamma] \cdot [Y]^3
+    \]
+    Both right side terms must have the same dimensions as the left side term. Start with the first term:
+    \[
+        \begin{aligned}
+            \frac{[Y]}{[T]} &= [D] \cdot \frac{[Y]}{[L]^2}\\
+            [D] &= \frac{[L]^2}{[T]}
+        \end{aligned}
+    \]
+    Second term:
+    \[
+        \begin{aligned}
+            \frac{[Y]}{[T]} &= [\gamma] \cdot [Y]^3\\
+            [\gamma] &= \frac{1}{[T][Y]^2}
+        \end{aligned}
+    \]
+    Summary of Dimensions:
+    \[
+        \begin{aligned}\relax
+            [t] &= [T] \\
+            [x] &= [L] \\
+            [y] &= [Y] \\
+            [D] &= \frac{[L]^2}{[T]} \\
+            [\gamma] &= \frac{1}{[T][Y]^2} \\
+        \end{aligned}
+    \]
+\end{solution}
+
+
+
+\end{document}

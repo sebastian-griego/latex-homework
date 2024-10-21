@@ -1,0 +1,65 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usepackage{float}
+\usepackage{graphicx}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\RR}{\mathbb{R}}
+\DeclareMathOperator{\rng}{rng}
+
+% Page setup
+\setlength{\headheight}{15pt}
+\geometry{letterpaper, margin=1in}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textbf{Sebastian Griego}}  % Replace with your name
+\fancyhead[C]{\textbf{Math Modeling}}  % Replace with your course name
+\fancyhead[R]{\textbf{Assignment \#1}}  % Replace with your assignment number
+\fancyfoot[C]{\thepage}
+
+\newenvironment{problem}[1]{
+\textbf{Problem #1:}
+}{
+\rmfamily \vspace{1em}
+}
+
+\newenvironment{solution}{
+\textbf{Solution:}
+
+}{
+
+\vspace{2em}
+}
+
+\begin{document}
+
+\title{Homework \#1}  % Replace with the homework number
+\author{Sebastian Griego}  % Replace with your name
+
+\begin{problem}{4.1}
+    For the damp pendulum equation
+    \[
+        \ddot{\theta} + \alpha \dot{\theta} + \beta \sin(\gamma \theta) = 0, \: \theta(0) = \theta_0, \: \dot{\theta}(0) = 1
+    \]
+    find suitable rescaling for \(\alpha, \beta = \mathcal{O}(1)\) and \(\gamma > > 1\).
+\end{problem}
+
+\begin{solution}
+    Currently, the equation is in the form:
+    \[
+        \frac{d^2\theta^*}{dt^{*^2}} + \alpha \frac{d\theta^*}{dt^*} + \beta \sin(\gamma \theta^*) = 0
+    \]
+
+\end{solution}
+
+
+
+\end{document}
+

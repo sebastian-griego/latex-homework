@@ -1,0 +1,105 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usepackage{float}
+\usepackage{graphicx}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\RR}{\mathbb{R}}
+\DeclareMathOperator{\rng}{rng}
+
+% Page setup
+\setlength{\headheight}{15pt}
+\geometry{letterpaper, margin=1in}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textbf{Sebastian Griego}}  % Replace with your name
+\fancyhead[C]{\textbf{Math Modeling}}  % Replace with your course name
+\fancyhead[R]{\textbf{Assignment \#1}}  % Replace with your assignment number
+\fancyfoot[C]{\thepage}
+
+\newenvironment{problem}[1]{
+\textbf{Problem #1:}
+}{
+\rmfamily \vspace{1em}
+}
+
+\newenvironment{solution}{
+\textbf{Solution:}
+
+}{
+
+\vspace{2em}
+}
+
+\begin{document}
+
+\title{Homework \#1}  % Replace with the homework number
+\author{Sebastian Griego}  % Replace with your name
+
+\begin{problem}{4.3}
+    For the damp pendulum equation
+    \[
+        \ddot{\theta} + \alpha \dot{\theta} + \beta \sin(\gamma \theta) = 0, \: \theta(0) = \theta_0, \: \dot{\theta}(0) = 1
+    \]
+    find suitable rescaling for \(\alpha \sim \gamma \beta \sim \frac{1}{\gamma} > > 1\).
+\end{problem}
+
+\begin{solution}
+    \(\frac{1}{\gamma} > > 1 \implies \gamma < < 1\).
+
+    Currently, the equation is in the form:
+    \[
+        \frac{d^2\theta^*}{dt^{*^2}} + \alpha \frac{d\theta^*}{dt^*} + \beta \sin(\gamma \theta^*) = 0
+    \]
+    Rescale \(\theta^*\) and \(t^*\):
+    \[
+        \begin{aligned}
+            \theta^* &= [\theta^*] \hat{\theta} \\
+            t^* &= [\theta^*] t
+        \end{aligned}
+    \]
+    Use the scaled derivatives:
+    \[
+        \begin{aligned}
+            \frac{d\theta^*}{dt^*} &= \frac{[\theta^*]}{[t^*]} \frac{d\hat{\theta}}{dt^*} \\
+            \frac{d^2\theta^*}{dt^{*^2}} &= \frac{[\theta^*]}{[t^*]^2} \frac{d^2\hat{\theta}}{dt^{*^2}}
+        \end{aligned}
+    \]
+    Substitute into the original equation:
+    \[
+        \begin{aligned}
+            \frac{[\theta^*]}{[t^*]^2} \frac{d^2\hat{\theta}}{dt^{*^2}} + \alpha \frac{[\theta^*]}{[t^*]} \frac{d\hat{\theta}}{dt^*} + \beta \sin(\gamma [\theta^*] \hat{\theta}) &= 0 \\
+            [\theta^*] \frac{d^2\hat{\theta}}{dt^{*^2}} + \alpha [t^*][\theta^*] \frac{d\hat{\theta}}{dt^*} + [t^{*^2}]\beta \sin(\gamma [\theta^*] \hat{\theta}) &= 0
+        \end{aligned}
+    \]
+    Define:
+    \[
+        \begin{aligned}\relax
+            [t^*] &= \frac{1}{\sqrt{\beta}} \\
+            [t^{*^2}] &= \frac{1}{\beta} \\
+            [\theta^*] &= \frac{1}{\alpha}
+        \end{aligned}
+    \]
+    The equation becomes:
+    \[
+        \frac{1}{\alpha}\frac{d^2\hat{\theta}}{dt^{*^2}} + \frac{1}{\sqrt{\beta}} \frac{d\hat{\theta}}{dt^*} + \sin(\frac{\gamma}{\alpha} \hat{\theta}) = 0
+    \]
+    \newpage
+    \[
+        \begin{aligned}
+            \frac{dM_1(t)}{dt} &= r_1 M_1(t) \left(1 - \frac{M_1(t)}{K_1}\right) - \sigma_1 M_1(t) + \gamma_2 M_2(t-\tau) - \gamma_1 M_1(t) \\[10pt]
+            \frac{dM_2(t)}{dt} &= -\sigma_2 M_2(t) + \gamma_1 M_1(t-\tau) - \gamma_2 M_2(t)
+        \end{aligned}
+    \]  
+    
+
+\end{solution}
+
+\end{document}

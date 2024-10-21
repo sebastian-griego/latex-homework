@@ -1,0 +1,114 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usepackage{float}
+\usepackage{graphicx}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\rng}{rng}
+\DeclareMathOperator{\norm}{||}
+\DeclareMathOperator{\NN}{\mathbb{N}}
+\DeclareMathOperator{\ZZ}{\mathbb{Z}}
+\DeclareMathOperator{\QQ}{\mathbb{Q}}
+\DeclareMathOperator{\RR}{\mathbb{R}}
+\DeclareMathOperator{\CC}{\mathbb{C}}
+
+% Page setup
+\setlength{\headheight}{15pt}
+\geometry{letterpaper, margin=1in}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textbf{Sebastian Griego}}  % Replace with your name
+\fancyhead[C]{\textbf{Math Modeling}}  % Replace with your course name
+\fancyhead[R]{\textbf{Assignment \#2}}  % Replace with your assignment number
+\fancyfoot[C]{\thepage}
+
+\newenvironment{problem}[1]{
+    \textbf{Problem #1:}
+}{
+    \rmfamily \vspace{1em}
+}
+
+\newenvironment{solution}{
+    \textbf{Solution:}
+    
+}{
+    
+    \vspace{2em}
+}
+
+\begin{document}
+
+\title{Homework \#2}  % Replace with the homework number
+\author{Sebastian Griego}  % Replace with your name
+
+\begin{problem}{1}
+    The dynamics of the number of photons \(n(t)\) in a laser field is given by 
+    \[
+        \frac{dn}{dt} = (GN_0 - k)n - \alpha G n^2
+    \]
+    where \(G\) is the gain coefficient for a simulated emission, \(k\) is the decay rate due to photon loss by scattering, \(\alpha\) is the rate at which atoms drop back to their ground states and in the absence of a laser field, the number of excited atoms is kept fixed at \(N_0\).
+    \begin{enumerate}
+        \item Find the equilibrium points of the system and comment on their stability.
+        \item Show that the system undergoes a transcritical bifurcation at \(N_0 = \frac{k}{G}\).
+    \end{enumerate}
+\end{problem}
+
+\begin{solution}
+    The equilibrium points are found by setting \(\frac{dn}{dt} = 0\):
+    \[
+        (GN_0 - k)n - \alpha G n^2 = 0
+    \]
+    Solving for \(n\), we get:
+    \[
+        \begin{aligned}
+            n^*_1 &= 0 \\
+            n_2^* &= \frac{GN_0 - k}{\alpha G}
+        \end{aligned}
+    \]
+    To analyze the stability of the equilibrium points, we examine the derivative of \(\frac{dn}{dt}\) with respect to \(n\):
+
+    \[
+        \frac{d}{dn}\left( (G N_0 - k)n - \alpha G n^2 \right) = G N_0 - k - 2 \alpha G n
+    \]
+
+    Equilibrium Point \(n_1^* = 0\):
+
+    Substitute \(n = 0\):
+
+    \[  
+        \left.\frac{d}{dn}\left( \frac{dn}{dt} \right)\right|_{n=0} = G N_0 - k
+    \]
+
+    - If \(G N_0 - k < 0\), then \(n_1^* = 0\) is stable.
+
+    - If \(G N_0 - k > 0\), then \(n_1^* = 0\) is unstable.
+
+    Equilibrium Point \(n_2^* = \frac{G N_0 - k}{\alpha G}\):
+
+    Substitute \(n = n_2^*\):
+
+    \[
+        \begin{aligned}
+            \left.\frac{d}{dn}\left( \frac{dn}{dt} \right)\right|_{n=n_2^*} &= G N_0 - k - 2 \alpha G \left( \frac{G N_0 - k}{\alpha G} \right) \\
+            &= (G N_0 - k) - 2 (G N_0 - k) \\
+            &= -(G N_0 - k)
+        \end{aligned}
+    \]
+
+    - If \(G N_0 - k > 0\), then \(n_2^*\) is stable.
+
+    - If \(G N_0 - k < 0\), then \(n_2^*\) is unstable.
+
+    Both equalibria change stability at \(N_0 = \frac{k}{G}\), so a transcritical bifurcation occurs at this point.
+    
+\end{solution}
+
+    
+\end{document}
