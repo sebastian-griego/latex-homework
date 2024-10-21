@@ -1,0 +1,540 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usepackage{float}
+\usepackage{graphicx}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\rng}{rng}
+\DeclareMathOperator{\norm}{||}
+\DeclareMathOperator{\NN}{\mathbb{N}}
+\DeclareMathOperator{\ZZ}{\mathbb{Z}}
+\DeclareMathOperator{\QQ}{\mathbb{Q}}
+\DeclareMathOperator{\RR}{\mathbb{R}}
+\DeclareMathOperator{\CC}{\mathbb{C}}
+
+% Page setup
+\setlength{\headheight}{15pt}
+\geometry{letterpaper, margin=1in}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textbf{Sebastian Griego}}  % Replace with your name
+\fancyhead[C]{\textbf{ODEs}}  % Replace with your course name
+\fancyhead[R]{\textbf{Assignment \#6}}  % Replace with your assignment number
+\fancyfoot[C]{\thepage}
+
+\newenvironment{problem}[1]{
+    \textbf{Problem #1:}
+}{
+    \rmfamily \vspace{1em}
+}
+
+\newenvironment{solution}{
+    \textbf{Solution:}
+    
+}{
+    
+    \vspace{2em}
+}
+
+\begin{document}
+
+\title{Homework \#6}  % Replace with the homework number
+\author{Sebastian Griego}  % Replace with your name
+\maketitle
+
+\begin{problem}{1}
+    Consider the system
+    \[
+        \begin{pmatrix}
+            \dot{x}_1(t) \\
+            \dot{x}_2(t)
+        \end{pmatrix} = \begin{pmatrix}
+            0 & t \\
+            0 & 2
+        \end{pmatrix}\begin{pmatrix}
+            x_1 \\
+            x_2
+        \end{pmatrix} + \begin{pmatrix}
+            0 \\
+            t
+        \end{pmatrix} u, \quad y = \begin{pmatrix}
+            1 & 0 \end{pmatrix} x, \quad x \in \RR^2, \quad u,y \in \RR
+    \]
+    \begin{enumerate}[label=\alph*)]
+        \item Compute its state transition matrix.
+        \item Compute the system’s output to the constant input \(u(t) = 1, \forall t \geq 0\), for an arbitrary initial condition \(x(0) = \begin{pmatrix}
+            x_1(0) \\
+            x_2(0)
+        \end{pmatrix}\).
+    \end{enumerate}
+\end{problem}
+
+\begin{solution}
+    \begin{enumerate}[label=\alph*)]
+        \item Want to find \(\Phi(t,s)\).
+        \[
+            \vec{x}(t) = \Phi(t,t_0)\vec{x}(0) + \int_{t_0}^t \Phi(t,s)\vec{B}(s)u(s)ds
+        \]
+        \[
+            \begin{aligned}
+                \dot{x_1}(t) &= tx_2(t) \\
+                \dot{x_2}(t) &= 2x_2(t)
+            \end{aligned}
+        \]
+        So,
+        \[
+            x_2(t) = x_{2,0}e^{2t-t_0}
+        \]
+        Now,
+        \[
+            \begin{aligned}
+                x_1(t) &= x_{1,0} + x_{2,0} \int_{t_0}^t (s-t_0+t_0) e^{2(s-t_0)} ds \\
+                &=x_{1,0} + x_{2,0} \int_{0}^{t-t_0} (u+t_0) e^{2u} du \\
+                &= x_{1,0} + x_{2,0} \left(\frac{u+t_0}{2}e^{2u} \right)_{0}^{t-t_0} - x_{2,0} \int_{0}^{t-t_0} \frac{1}{2}e^{2u} du \\
+                &= x_{1,0} + x_{2,0} \left(\frac{t-t_0+t_0}{2}e^{2(t-t_0)} - \frac{t_0}{2} \right) - x_{2,0} \left( \frac{1}{4}e^{2(t-t_0)} - \frac{1}{4} \right) \\
+                &= x_{1,0} + x_{2,0} \left(\frac{t}{2}e^{2(t-t_0)} - \frac{t_0}{2} - \frac{1}{4}e^{2(t-t_0)} + \frac{1}{4} \right) \\
+            \end{aligned}
+        \]
+        So,
+        \[
+            \begin{pmatrix}
+                x_1(t) \\
+                x_2(t)
+            \end{pmatrix} = \begin{pmatrix}
+                1 & \Phi(t,t_0) \\
+                0 & e^{2(t-t_0)}
+            \end{pmatrix} \begin{pmatrix}
+                x_{1,0} \\
+                x_{2,0}
+            \end{pmatrix}
+        \]
+        So,
+        \[
+            \Phi(t,s) = \begin{pmatrix}
+                1 & \frac{t}{2}e^{2(t-s)} - \frac{s}{2} - \frac{1}{4}e^{2(t-s)} + \frac{1}{4} \\
+                0 & e^{2(t-s)}
+            \end{pmatrix}
+        \]
+        \item part b
+        
+        The soltion is
+        \[
+            \vec{x}(t) = \Phi(t,t_0)\vec{x}(0) + \int_{t_0}^t \Phi(t,s)\vec{B}(s)u(s)ds
+        \]
+        Here, \(u(s) = 1\), so
+        \[
+            \vec{x}(t) = \Phi(t,t_0)\vec{x}(0) + \int_{t_0}^t \Phi(t,s)\vec{B}(s)ds
+        \]
+        It is given that \(B(s) = \begin{pmatrix}
+            0 \\
+            s
+        \end{pmatrix}\), so
+        \[
+            \vec{x}(t) = \Phi(t,t_0)\vec{x}(0) + \int_{t_0}^t \Phi(t,s)\begin{pmatrix}
+            0 \\
+            s
+        \end{pmatrix}ds
+        \]
+        So,
+        \[
+            \begin{pmatrix}
+                x_1(t) \\
+                x_2(t)
+            \end{pmatrix} = \begin{pmatrix}
+                1 & \frac{t}{2}e^{2(t-t_0)} - \frac{s}{2} - \frac{1}{4}e^{2(t-t_0)} + \frac{1}{4} \\
+                0 & e^{2(t-t_0)}
+            \end{pmatrix} \begin{pmatrix}
+                x_{1,0} \\
+                x_{2,0}
+            \end{pmatrix} + \int_{t_0}^t \begin{pmatrix}
+                1 & \frac{s}{2}e^{2(s-t_0)} - \frac{s}{2} - \frac{1}{4}e^{2(s-t_0)} + \frac{1}{4} \\
+                0 & e^{2(s-t_0)}
+            \end{pmatrix} \begin{pmatrix}
+                0 \\
+                s
+            \end{pmatrix}ds
+            \]
+            Wolfram Alpha said this was too many characters when I put it in. So, here is ChatGPT's answer (probably wrong):
+            \[
+                \begin{pmatrix}
+                    x_1(t) \\
+                    x_2(t)
+                \end{pmatrix} = 
+                \begin{pmatrix}
+                    x_{1,0} + \left( \frac{t}{2} - \frac{1}{4} \right) e^{2(t-t_0)} - \frac{t_0}{2} + \frac{1}{4} \\
+                    \left( x_{2,0} + \frac{t_0}{2} + \frac{1}{4} \right) e^{2(t-t_0)} - \frac{t}{2} - \frac{1}{4}
+                \end{pmatrix}
+            \]
+
+
+    \end{enumerate}
+
+\end{solution}
+
+\newpage
+
+\begin{problem}{2}
+    Consider the homogeneous linear time-varying system
+    \[
+        \dot{\vec{x}}(t) = A(t)\vec{x}(t), \quad \vec{x}(t_0) = \vec{x}_0
+    \]
+    with state transition matrix \(\Phi(t,\tau)\). Consider also the non-homogeneous system
+    \[
+        \dot{\vec{z}}(t) = A(t)\vec{z}(t) + \vec{x}(t), \quad \vec{z}(t_0) = \vec{z}_0
+    \]
+    \begin{enumerate}[label=\alph*)]
+        \item Compute \(\vec{x}(t)\) and \(\vec{z}(t)\) as a function of \(\vec{x}_0, \vec{z}_0,\) and \(\Phi(t,\tau)\). No integrals should appear in your answer.
+        \item For a given time \(T > 0\), how should \(x_0\) and \(z_0\) be related to have \(z(T) = 0\)?
+    \end{enumerate}
+\end{problem}
+
+
+\begin{solution}
+    \begin{enumerate}[label=\alph*)]
+        \item Start with \(\vec{x}(t)\)
+    
+        This has a straightforward solution:
+        \[
+            \vec{x}(t) = \Phi(t, t_0) \vec{x}_0
+        \]
+    
+        Now for \(\vec{z}(t)\):
+        \[
+            \dot{\vec{z}}(t) = A(t)\vec{z}(t) + \vec{x}(t), \quad \vec{z}(t_0) = \vec{z}_0
+        \]
+        Start with the solution with an integral and simplify:
+        \[
+            \begin{aligned}
+                \vec{z}(t) &= \Phi(t, t_0) \vec{z}_0 + \int_{t_0}^{t} \Phi(t, s) \vec{x}(s) \, ds \\
+                &= \Phi(t, t_0) \vec{z}_0 + \int_{t_0}^{t} \Phi(t, s) \Phi(s, t_0) \vec{x}_0 \, ds\\
+                &= \Phi(t, t_0) \vec{z}_0 + \int_{t_0}^{t} \Phi(t, t_0) \vec{x}_0 \, ds\\
+                &= \Phi(t, t_0) \vec{z}_0 + \Phi(t, t_0) \vec{x}_0 \int_{t_0}^{t} ds\\
+                &= \Phi(t, t_0) \vec{z}_0 + \Phi(t, t_0) \vec{x}_0 (t - t_0)
+            \end{aligned}
+        \]
+        \item To achieve \(\vec{z}(T) = 0\), set the solution at \(t = T\) to zero:
+        \[
+            \begin{aligned}
+                \vec{z}(T) &= \Phi(T, t_0) \vec{z}_0 + \Phi(T, t_0) \vec{x}_0 (T - t_0)\\
+                &= \Phi(T, t_0) (\vec{z}_0 + \vec{x}_0 (T - t_0)) = 0
+            \end{aligned}
+        \]
+        Assuming \(\Phi(T, t_0)\) is invertible (I think it has to be), we can solve for \(\vec{z}_0\):
+        \[
+            \vec{z}_0 + \vec{x}_0 (T - t_0) = 0 \quad \Rightarrow \quad \vec{z}_0 = -\vec{x}_0 (T - t_0)
+        \]
+        Therefore, the initial conditions must satisfy
+        \[
+            \vec{z}_0 = - (T - t_0) \vec{x}_0\,.
+        \]
+    \end{enumerate}
+\end{solution}
+
+\newpage
+
+\begin{problem}{3}
+    Compute \(A^n\) and \(e^{An}\) for the following matrices:
+    \[
+        A_1 = \begin{pmatrix}
+            1 & 1 & 0 \\
+            0 & 1 & 0 \\
+            0 & 0 & 1
+        \end{pmatrix}, \quad A_2 = \begin{pmatrix}
+            1 & 1 & 0 \\
+            0 & 0 & 1 \\
+            0 & 0 & 1
+        \end{pmatrix}, \quad A_3 = \begin{pmatrix}
+            2 & 0 & 0 & 0 \\
+            2 & 2 & 0 & 0 \\
+            0 & 0 & 3 & 3 \\
+            0 & 0 & 0 & 3
+        \end{pmatrix}
+    \]
+\end{problem}
+
+\begin{solution}
+    \[
+        \begin{aligned}
+            A_1 & = I + N\\
+            &= \begin{pmatrix}
+                1 & 0 & 0 \\
+                0 & 1 & 0 \\
+                0 & 0 & 1
+            \end{pmatrix} + \begin{pmatrix}
+                0 & 1 & 0 \\
+                0 & 0 & 0 \\
+                0 & 0 & 0
+            \end{pmatrix}
+        \end{aligned}
+    \]
+    \(NI = IN\) because identity.
+    \[
+        \begin{aligned}
+            N^2 = \begin{pmatrix}
+                \begin{pmatrix}
+                    0 & 1 \\
+                    0 & 0
+                \end{pmatrix}^2 & 0 \\
+                0 & (0)^2
+            \end{pmatrix} = \begin{pmatrix}
+                0 & 0 \\
+                0 & 0
+            \end{pmatrix}
+        \end{aligned}
+    \]
+    Binomial theorem:
+    \[
+        \begin{aligned}
+            (I + N)^n &= \sum_{k=0}^n \binom{n}{k} I^{n-k}N^k\\
+            &= \sum_{k=0}^1 \binom{n}{k} I^{n-k}N^k\\
+            &= I + nN\\
+            &= \begin{pmatrix}
+                1 & n & 0 \\
+                0 & 1 & 0 \\
+                0 & 0 & 1
+            \end{pmatrix}
+        \end{aligned}
+    \]
+    Now \(A_2\):
+    \[
+        \begin{aligned}
+            A_2 &= D + N\\
+            &= \begin{pmatrix}
+                1 & 0 & 0 \\
+                0 & 0 & 0 \\
+                0 & 0 & 1
+            \end{pmatrix} + \begin{pmatrix}
+                0 & 1 & 0 \\
+                0 & 0 & 1 \\
+                0 & 0 & 0
+            \end{pmatrix}
+        \end{aligned}
+    \]
+    where
+    \[
+        N^2 = \begin{pmatrix}
+            0 & 0 & 1 \\
+            0 & 0 & 0 \\
+            0 & 0 & 0
+        \end{pmatrix}
+    \]
+    \[
+        N^3 = 0
+    \]
+    \[
+        D^n = D
+    \]
+    \[
+        DN + ND = N
+    \]
+    Look at the pattern:
+    \[
+        \begin{aligned}
+            (D+N)^2 &= D^2 + 2DN + N^2 = D + N + N^2\\
+            (D+N)^3 &= D + N + N^2 + DN^2 = D + N + 2N^2
+        \end{aligned}
+    \]
+    Induction:
+    \[
+        (D+N)^1 = D + N
+    \]
+    Assume:
+    \[
+        (D+N)^n = D + N + (n-1)N^2
+    \]
+    Then:
+    \[
+        \begin{aligned}
+            (D+N)^{n+1} &= (D+N)^n + (D+N)N^2\\
+            &= D + N + (n-1)N^2 + DN^2\\
+            &= D + N + nN^2
+        \end{aligned}
+    \]
+    Now \(A_3\):
+    \[
+        \begin{aligned}
+            A_3^n &= \begin{pmatrix}
+                2 & 0 & 0 & 0 \\
+                2 & 2 & 0 & 0 \\
+                0 & 0 & 3 & 3 \\
+                0 & 0 & 0 & 3
+            \end{pmatrix}^n\\
+            &= \begin{pmatrix}
+                \begin{pmatrix}
+                    2 & 0 \\
+                    2 & 2
+                \end{pmatrix}^n & 0 \\
+                0 & \begin{pmatrix}
+                    3 & 3 \\
+                    0 & 3
+                \end{pmatrix}^n
+            \end{pmatrix}\\
+            &= \begin{pmatrix}
+                2^n \begin{pmatrix}
+                    1 & 0 \\
+                    1 & 1
+                \end{pmatrix}^n & 0 \\
+                0 & 3^n \begin{pmatrix}
+                    1 & 1 \\
+                    0 & 1
+                \end{pmatrix}^n
+            \end{pmatrix}\\
+            &= \begin{pmatrix}
+                2^n \begin{pmatrix}
+                    1 & 0 \\
+                    n & 1
+                \end{pmatrix} & 0 \\
+                0 & 3^n \begin{pmatrix}
+                    1 & n \\
+                    0 & 1
+                \end{pmatrix}
+            \end{pmatrix}
+        \end{aligned}
+    \]
+    Now \(e^{A_1 t}\):
+    \[
+        \begin{aligned}
+            e^{A_1 t} &= \sum_{j=0}^\infty \frac{(tA_1)^j}{j!}\\
+            &= \sum_{j=0}^\infty \frac{t^j(I + N)^j}{j!}\\
+            &= \sum_{j=0}^\infty \frac{t^j}{j!} \begin{pmatrix}
+                1 & j & 0 \\
+                0 & 1 & 0 \\
+                0 & 0 & 1
+            \end{pmatrix}\\
+            &= e^t \sum_{j=0}^\infty \begin{pmatrix}
+                1 & j & 0 \\
+                0 & 1 & 0 \\
+                0 & 0 & 1
+            \end{pmatrix}\\
+        \end{aligned}
+    \]
+    
+    For \(e^{A_2t}\):
+    \[
+        \begin{aligned}
+            e^{A_2t} &= \sum_{n=0}^\infty \frac{(tA_2)^n}{n!} \\
+            &= \sum_{j=0}^\infty \frac{t^j(D + N)^j}{j!}\\
+            &= \sum_{j=0}^\infty \frac{t^j(D + N + (j-1)N^2)}{j!}\\
+        \end{aligned}
+    \]
+    For \(e^{A_3 t}\):
+    \[
+        \begin{aligned}
+            e^{A_3 t} &= \sum_{j=0}^\infty \frac{(tA_3)^j}{j!}\\
+            &= \sum_{j=0}^\infty \frac{t^j}{j!} \begin{pmatrix}
+                2^j & 0 & 0 & 0 \\
+                j2^j & 2^j & 0 & 0 \\
+                0 & 0 & 3^j & j3^j \\
+                0 & 0 & 0 & 3^j
+            \end{pmatrix}\\
+            &= e^t \sum_{j=0}^\infty \begin{pmatrix}
+                2^j & 0 & 0 & 0 \\
+                j2^j & 2^j & 0 & 0 \\
+                0 & 0 & 3^j & j3^j \\
+                0 & 0 & 0 & 3^j
+            \end{pmatrix}\\
+        \end{aligned}
+    \]
+\end{solution}
+
+\newpage
+
+\begin{problem}{4}
+    Consider an upper triangular matrix \(A\).
+    \begin{enumerate}[label=\alph*)]
+        \item Show that \(e^{At}\) is also upper triangular.
+        \item Relate the diagonal elements of \(A\) with those of \(e^{At}\).
+    \end{enumerate}
+\end{problem}
+
+\begin{solution}
+    \begin{enumerate}[label=\alph*)]
+        \item Suppose \(A = \begin{pmatrix}
+            a_{11} & a_{12} & \cdots & a_{1n} \\
+            0 & a_{22} & \cdots & a_{2n} \\
+            \vdots & \vdots & \ddots & \vdots \\
+            0 & 0 & \cdots & a_{nn}
+        \end{pmatrix}\).
+        \[
+            A = D + N
+        \]
+        where \(D\) is diagonal and \(N\) is strictly upper triangular.
+
+        Put \(e^{At}\) in same form:
+        \[
+            e^{At} = e^{Dt}e^{Nt} = \sum_{j=0}^\infty \frac{(Dt)^j}{j!} \left(\sum_{k=0}^\infty \frac{(Nt)^k}{k!}\right)
+        \]
+        \(D\) remains diagonal always, and \(N\) stays upper triangular. So, \(e^{At}\) is upper triangular.
+
+        \item Relate the diagonal elements of \(A\) with those of \(e^{At}\).
+
+
+The diagonal elements of \(e^{At}\) are given by:
+\[
+e^{Dt} = \sum_{j=0}^{\infty} \frac{(a_{ii} t)^j}{j!} = e^{a_{ii} t}
+\]
+Each diagonal element of \(e^{At}\) is the exponential of the corresponding diagonal element of \(A\) multiplied by \(t\). 
+
+\[
+A = \begin{pmatrix}
+a_{11} & * & \cdots & * \\
+0 & a_{22} & \cdots & * \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & a_{nn}
+\end{pmatrix},
+\]
+\[
+e^{At} = \begin{pmatrix}
+e^{a_{11} t} & * & \cdots & * \\
+0 & e^{a_{22} t} & \cdots & * \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & e^{a_{nn} t}
+\end{pmatrix}.
+\]
+
+    \end{enumerate}
+    
+\end{solution}
+
+\newpage
+
+\begin{problem}{5}
+    For \(n \times n\) matrices \(A, B\), show that if \(AB = BA\), then \(e^{A+B} = e^A e^B\).
+
+    Using this result, show then that \((e^A)^{-1} = e^{-A}\).
+\end{problem}
+
+\begin{solution}
+    \[
+        \begin{aligned}
+            e^{A+B} &= \sum_{j=0}^\infty \frac{(A+B)^j}{j!}\\
+            &= \sum_{j=0}^\infty \sum_{\ell=0}^j \frac{1}{j!} \binom{j}{\ell} A^{\ell}B^{j-\ell}\\
+            &= \sum_{\ell=0}^\infty \sum_{j=\ell}^\infty \frac{1}{j!} \binom{j}{\ell} A^{\ell}B^{j-\ell}\\
+            &= \sum_{\ell=0}^\infty \sum_{j=\ell}^\infty \frac{j!}{j! \ell! (j-\ell!)}A^{\ell}B^{j-\ell}\\
+            &= \sum_{\ell=0}^\infty \sum_{j=\ell}^\infty \frac{1}{ \ell! (j-\ell!)}A^{\ell}B^{j-\ell}\\
+            &= \sum_{\ell=0}^\infty \sum_{j-\ell = 0}^\infty \frac{1}{ \ell! (j-\ell!)}A^{\ell}B^{j-\ell}\\
+            &= \left( \sum_{\ell=0}^\infty \frac{A^{\ell}}{\ell!} \right) \left( \sum_{j-\ell = 0}^\infty \frac{B^{j-\ell}}{(j-\ell)!} \right)\\
+            &= e^A e^B
+        \end{aligned}
+    \]
+    Showing \((e^A)^{-1} = e^{-A}\):
+    \[
+        e^{A} e^{-A} = e^{A + (-A)} = e^{A - A} = e^{0} = I
+    \]
+    Therefore, \(e^{-A}\) is the inverse of \(e^A\):
+    \[
+        e^{-A} = (e^A)^{-1}
+    \]
+
+\end{solution}
+
+
+
+\end{document}
