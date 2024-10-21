@@ -1,0 +1,99 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usepackage{float}
+\usepackage{graphicx}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\RR}{\mathbb{R}}
+\DeclareMathOperator{\rng}{rng}
+
+% Page setup
+\setlength{\headheight}{15pt}
+\geometry{letterpaper, margin=1in}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textbf{Sebastian Griego}}  % Replace with your name
+\fancyhead[C]{\textbf{Math Modeling}}  % Replace with your course name
+\fancyhead[R]{\textbf{Assignment \#1}}  % Replace with your assignment number
+\fancyfoot[C]{\thepage}
+
+\newenvironment{problem}[1]{
+\textbf{Problem #1:}
+}{
+\rmfamily \vspace{1em}
+}
+
+\newenvironment{solution}{
+\textbf{Solution:}
+
+}{
+
+\vspace{2em}
+}
+
+\begin{document}
+
+\title{Homework \#1}  % Replace with the homework number
+\author{Sebastian Griego}  % Replace with your name
+
+\begin{problem}{5.2}
+    Consider the following model equation
+    \[
+        \begin{aligned}
+            \frac{\partial y}{\partial t} &= D\frac{\partial^2 y}{\partial x^2} + \gamma y^3 \\
+            y(x,0) &= 0, \: 0 < x < \infty \\
+            y(0,t) &= y_0, \: t > 0, \: y(\infty, t) = 0, \: t > 0
+        \end{aligned}
+    \]
+    Non-dimensionalize the equation.
+\end{problem}
+
+\begin{solution}
+    Rescale the variables:
+    \[
+        \begin{aligned}
+            x &= [x]x^* \\
+            t &= [t]t^* \\
+            y &= [y]y^* \\
+        \end{aligned}
+    \]
+    Scale the derivatives:
+    \[
+        \begin{aligned}
+            \frac{\partial y}{\partial t} &= \frac{[y]}{[t]} \frac{\partial y^*}{\partial t^*}\\
+            \frac{\partial^2 y}{\partial x^2} &= \frac{[y]}{[x^2]} \frac{\partial^2 y^*}{\partial x^{*2}}
+        \end{aligned}
+    \]
+    Substitute the rescaled variables and derivatives into the original equation:
+    \[
+        \begin{aligned}
+            \frac{[y]}{[t]} \frac{\partial y^*}{\partial t^*} &= D \frac{[y]}{[x^2]} \frac{\partial^2 y^*}{\partial x^{*2}} + \gamma [y^3] y^{*3} \\
+            \frac{\partial y^*}{\partial t^*} &= D\frac{[t]}{[x^2]} \frac{\partial^2 y^*}{\partial x^{*2}} + \gamma [t][y^2] y^{*3}
+        \end{aligned}
+    \]
+    Define:
+    \[
+        \begin{aligned}\relax
+            [x] &= \sqrt{D} \\
+            [x^2] &= D \\
+            [y] &= \frac{1}{\sqrt{\gamma}}\\
+            [y^2] &= \frac{1}{\gamma}\\
+            [t] &= 1
+        \end{aligned}
+    \]
+    Substitute these into the equation:
+    \[
+        \frac{\partial y^*}{\partial t^*} = \frac{\partial^2 y^*}{\partial x^{*2}} + y^{*3}
+    \]
+    
+    
+\end{solution}
+
+\end{document}
