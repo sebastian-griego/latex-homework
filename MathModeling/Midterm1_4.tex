@@ -1,0 +1,133 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usepackage{float}
+\usepackage{graphicx}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\rng}{rng}
+\DeclareMathOperator{\norm}{||}
+\DeclareMathOperator{\NN}{\mathbb{N}}
+\DeclareMathOperator{\ZZ}{\mathbb{Z}}
+\DeclareMathOperator{\QQ}{\mathbb{Q}}
+\DeclareMathOperator{\RR}{\mathbb{R}}
+\DeclareMathOperator{\CC}{\mathbb{C}}
+
+% Page setup
+\setlength{\headheight}{15pt}
+\geometry{letterpaper, margin=1in}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textbf{Sebastian Griego}}  % Replace with your name
+\fancyhead[C]{\textbf{Math Modeling}}  % Replace with your course name
+\fancyhead[R]{\textbf{Midterm 1}}  % Replace with your assignment number
+\fancyfoot[C]{\thepage}
+
+\newenvironment{problem}[1]{
+    \textbf{Problem #1:}
+}{
+    \rmfamily \vspace{1em}
+}
+
+\newenvironment{solution}{
+    \textbf{Solution:}
+    
+}{
+    
+    \vspace{2em}
+}
+
+\begin{document}
+
+\title{Midterm 1}  % Replace with the homework number
+\author{Sebastian Griego}  % Replace with your name
+
+
+\begin{problem}{4}
+    The dynamics of two bacterial species, \(W\) and \(M\) can be modeled as the following system of differential equations.
+    \[
+    \begin{aligned}
+    \frac{dW}{dt} &= r_W W(1 - W - \alpha M) \\
+    \frac{dM}{dt} &= r_M M(1 - M - \beta W)
+    \end{aligned}
+    \]
+    \begin{enumerate}
+        \item  Obtain all the equilibrium solutions.
+        \item Identify conditions for the existence of non-zero equilibrium point (both species non-zero).
+        \item Pick a case with one of the conditions (any one) for the existence of non-zero equilibrium point (both species non-zero) that you identified above. Draw phase plane diagram and conclude the long-term dynamics of this system.
+    \end{enumerate}
+\end{problem}
+
+\begin{solution}
+
+    Equilibrium Solutions
+    
+    Set the derivatives to zero:
+    \[
+    \begin{aligned}
+    r_W W(1 - W - \alpha M) &= 0 \\
+    r_M M(1 - M - \beta W) &= 0
+    \end{aligned}
+    \]
+    
+    From the first equation:
+    \[
+    W = 0 \quad \text{or} \quad 1 - W - \alpha M = 0
+    \]
+    
+    From the second equation:
+    \[
+    M = 0 \quad \text{or} \quad 1 - M - \beta W = 0
+    \]
+    
+    Thus, the equilibrium solutions are:
+    \begin{enumerate}
+        \item \( W = 0, M = 0 \)
+        \item \( W = 0, M = 1 \)
+        \item \( W = \frac{1}{1 + \beta}, M = 0 \)
+        \item Non-trivial equilibrium:
+        \[
+        \begin{aligned}
+        1 - W - \alpha M &= 0 \\
+        1 - M - \beta W &= 0
+        \end{aligned}
+        \]
+        Solving the system:
+        \[
+        W^* = \frac{1 - \alpha}{1 - \alpha \beta}, \quad M^* = \frac{1 - \beta}{1 - \alpha \beta}
+        \]
+    \end{enumerate}
+    
+    Equilibrium points conditioms:
+
+    Assuming \(\alpha, \beta > 0\):
+    
+    For the non-trivial equilibrium \( (W^*, M^*) \) to exist and be positive:
+    \[
+    1 - \alpha \beta \neq 0 \quad \text{and} \quad 1 - \alpha > 0, \quad 1 - \beta > 0
+    \]
+    Thus:
+    \[
+    \alpha \beta \neq 1, \quad \alpha < 1, \quad \beta < 1
+    \]
+    
+    Phase Plane Diagram and Long-term Dynamics
+    
+    Phase plane diagram:
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.5\textwidth]{Mphase.pdf}
+        \caption{Phase Plane Diagram}
+    \end{figure}
+    
+\end{solution}
+
+\end{document}
+
+

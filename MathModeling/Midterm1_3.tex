@@ -1,0 +1,203 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usepackage{float}
+\usepackage{graphicx}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\rng}{rng}
+\DeclareMathOperator{\norm}{||}
+\DeclareMathOperator{\NN}{\mathbb{N}}
+\DeclareMathOperator{\ZZ}{\mathbb{Z}}
+\DeclareMathOperator{\QQ}{\mathbb{Q}}
+\DeclareMathOperator{\RR}{\mathbb{R}}
+\DeclareMathOperator{\CC}{\mathbb{C}}
+
+% Page setup
+\setlength{\headheight}{15pt}
+\geometry{letterpaper, margin=1in}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textbf{Sebastian Griego}}  % Replace with your name
+\fancyhead[C]{\textbf{Math Modeling}}  % Replace with your course name
+\fancyhead[R]{\textbf{Midterm 1}}  % Replace with your assignment number
+\fancyfoot[C]{\thepage}
+
+\newenvironment{problem}[1]{
+    \textbf{Problem #1:}
+}{
+    \rmfamily \vspace{1em}
+}
+
+\newenvironment{solution}{
+    \textbf{Solution:}
+    
+}{
+    
+    \vspace{2em}
+}
+
+\begin{document}
+
+\title{Midterm 1}  % Replace with the homework number
+\author{Sebastian Griego}  % Replace with your name
+
+\begin{problem}{3}
+  The following differential equation describes the motion of a bead sliding on a wire hoop that is rotating about a vertical axis:
+  \[
+  ml\frac{d^2x}{dt^2} = -b\frac{dx}{dt} - mg\sin(x) + ml \omega^2 \sin(x) \cos(x)
+  \]
+  where \(x\) measures its angular position (in radians) as a function of time \(t\).
+  The parameters \(m\), \(l\), \(b\), and \(\omega\) represent the mass of the bead, the radius of the hoop, the speed of rotation, and proportionality constant of friction, respectively. Use proper scaling to reduce the equation into the form
+  \[
+  \frac{d^2x}{dt^2} = -\beta \frac{dx}{dt} - \sin(x) + \mu \sin(x) \cos(x)
+  \]
+  Find all the steady state solutions for the system. Also, identify if the steady state solutions are stable.
+\end{problem}
+
+\begin{solution}
+    We start with the given differential equation:
+    \[
+    ml\frac{d^2x}{dt^2} = -b\frac{dx}{dt} - mg\sin(x) + ml \omega^2 \sin(x) \cos(x)
+    \]
+    Define:
+    \[
+    x = [x]x^*, \quad t = [t]t^*
+    \]
+    Then:
+    \[
+      \begin{aligned}
+      ml \frac{[x^2]}{[t^2]}\frac{d^2x^*}{dt^{*2}} &= -b \frac{[x]}{[t]}\frac{dx^*}{dt^*} - mg \sin([x]x^*) + ml \omega^2 \sin([x]x^*) \cos([x]x^*) \\
+      \frac{[x^2]}{[t^2]}\frac{d^2x^*}{dt^{*2}} &= -\frac{b}{ml} \frac{[x]}{[t]}\frac{dx^*}{dt^*} - \frac{g}{l} \sin([x]x^*) + \omega^2 \sin([x]x^*) \cos([x]x^*) \\
+      \end{aligned}
+    \]
+    Choose:
+    
+    \[
+    [x] = 1
+    \]
+    Then:
+    \[
+    \frac{d^2x^*}{dt^{*2}} = \frac{-b[t]}{ml}\frac{dx^*}{dt^*} - [t^2]\frac{g}{l}\sin(x^*) + \omega^2 [t^2] \sin(x^*) \cos(x^*)
+    \]
+    
+    Define:
+    
+    \[
+    [t] = \sqrt{\frac{l}{g}}
+    \]
+    
+    So:
+    
+    \[
+    \frac{d^2x^*}{dt^*2} = -\frac{b}{ml} \sqrt{\frac{l}{g}}\frac{dx^*}{dt^*} -\sin(x^*) + \frac{l\omega^2}{g} \sin(x^*) \cos(x^*)
+    \]
+    
+    Define:
+    
+    \[
+    \beta = \frac{b}{ml} \sqrt{\frac{l}{g}} \quad \text{and} \quad \mu = \frac{l\omega^2}{g}
+    \]
+    
+    This gives
+    \[
+    \frac{d^2x}{dt^2} = -\beta \frac{dx}{dt} - \sin(x) + \mu \sin(x) \cos(x)
+    \]
+    
+    
+    
+    Equilibrium points:
+    
+    Setting \(\frac{dx}{dt} = 0\) and \(\frac{d^2x}{dt^2} = 0\):
+    \[
+    0 = \beta \cdot 0 - \sin(x) + \mu \sin(x) \cos(x)
+    \]
+    Simplifying:
+    \[
+    0 = -\sin(x) + \mu \sin(x) \cos(x)
+    \]
+    \[
+    \sin(x) (-1 + \mu \cos(x)) = 0
+    \]
+    Two cases:
+    
+    1. \(\sin(x) = 0\)
+       
+       Solutions:
+       \[
+       x = n\pi \quad \text{for} \quad n \in \mathbb{Z}
+       \]
+       
+    2. \(-1 + \mu \cos(x) = 0\)
+       
+       Solving for \(\cos(x)\):
+       \[
+       \cos(x) = \frac{1}{\mu}
+       \]
+       
+       Due to the range of \(\cos(x)\), this only has solutions when:
+       \[
+       \left| \frac{1}{\mu} \right| \leq 1 \quad \Rightarrow \quad \mu \geq 1
+       \]
+       
+       When \(\mu \geq 1\), the solutions are:
+       \[
+       x = \cos^{-1}\left( \frac{1}{\mu} \right) + 2n\pi \quad \text{for} \quad n \in \mathbb{Z}
+       \]
+    
+    Stability:
+    
+    To determine the stability of each steady state solution, we analyze the first derivative of the system's right-hand side with respect to \( x \).
+    
+    Write the DE as a system:
+    \[
+    \begin{cases}
+    \frac{dx}{dt} = v \\
+    \frac{dv}{dt} = \beta v - \sin(x) + \mu \sin(x) \cos(x)
+    \end{cases}
+    \]
+    Small angle approximation:
+    \[
+    \sin(x) \approx x \quad \text{and} \quad \cos(x) \approx 1
+    \]
+    Continuing from the system representation:
+    \[
+    \begin{cases}
+    \frac{dx}{dt} = v \\
+    \frac{dv}{dt} = -\beta v - x + \mu x
+    \end{cases}
+    \]
+    
+    Jacobian:
+    \[
+      J = \begin{bmatrix}
+        0 & 1 \\
+        -1 + \mu & -\beta
+        \end{bmatrix}
+    \]
+    
+    Determinant:
+        \[
+        \det(J) = 1 - \mu
+        \]
+        Trace:
+        \[
+        \Tr(J) = -\beta
+        \]
+        So, \(\Tr(J) < 0\) and \(\det(J)\) depends on \(\mu\).
+
+        Therefore, the equilibrium points are either stable or saddles depending on \(\mu\). These don't depend on \(x\), so all equilibrium points have the same stability.
+    
+
+    
+\end{solution}
+
+\end{document}
+
+

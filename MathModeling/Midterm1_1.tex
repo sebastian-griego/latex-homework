@@ -1,0 +1,173 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usepackage{float}
+\usepackage{graphicx}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\rng}{rng}
+\DeclareMathOperator{\norm}{||}
+\DeclareMathOperator{\NN}{\mathbb{N}}
+\DeclareMathOperator{\ZZ}{\mathbb{Z}}
+\DeclareMathOperator{\QQ}{\mathbb{Q}}
+\DeclareMathOperator{\RR}{\mathbb{R}}
+\DeclareMathOperator{\CC}{\mathbb{C}}
+
+% Page setup
+\setlength{\headheight}{15pt}
+\geometry{letterpaper, margin=1in}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textbf{Sebastian Griego}}  % Replace with your name
+\fancyhead[C]{\textbf{Math Modeling}}  % Replace with your course name
+\fancyhead[R]{\textbf{Midterm 1}}  % Replace with your assignment number
+\fancyfoot[C]{\thepage}
+
+\newenvironment{problem}[1]{
+    \textbf{Problem #1:}
+}{
+    \rmfamily \vspace{1em}
+}
+
+\newenvironment{solution}{
+    \textbf{Solution:}
+    
+}{
+    
+    \vspace{2em}
+}
+
+\begin{document}
+
+\title{Midterm 1}  % Replace with the homework number
+\author{Sebastian Griego}  % Replace with your name
+
+
+\begin{problem}{1}
+    The population, \(N(t)\), of a plant species grows with per capita rate \(\mu\) per week and its growth is controlled by crowding effect of the form \(- \beta N^\alpha, \alpha > 1\) and \(\beta > 0\).
+    \begin{enumerate}
+        \item Develop a model for the population dynamics of this plant species.
+        \item Perform scaling to reduce equation into the form of \(\frac{dy}{dt} = \mu y - y^\alpha\).
+        \item For \(\alpha = 3\), perform bifurcation analysis and sketch a bifurcation diagram with \(\mu\) as a bifurcation parameter.
+    \end{enumerate}
+\end{problem}
+
+\begin{solution}
+    \begin{enumerate}
+        \item \textbf{Population Model}
+    
+        Assuming exponential growth, and including the crowding effect, the model is:
+        \[
+        \frac{dN}{dt} = \mu N - \beta N^\alpha
+        \]
+    
+        \item \textbf{Scaling}
+        
+        \[
+        \frac{dN}{dt} = \mu N - \beta N^\alpha
+        \]
+        Define:
+        \[
+        N = [N]N^*
+        \]
+        \[
+        t = [t]t^*
+        \]
+        Substituting into the model equation:
+        \[
+        \begin{aligned}
+            \frac{[N]}{[t]} \frac{dN^*}{dt^*} &= \mu [N]N^* - \beta ([N]N^*)^\alpha \\
+            \frac{1}{[t]} \frac{dN^*}{dt^*} &= \mu N^* - \beta ([N]^{\alpha - 1})(N^{*\alpha})\\
+            \frac{dN^*}{dt^*} &= \mu [t]N^* - \beta [t]([N]^{\alpha - 1})(N^{*\alpha})\\
+        \end{aligned}
+        \]
+        
+        To achieve the desired form \(\frac{dy}{dt} = \mu y - y^\alpha\), we need:
+        
+        \[
+        \begin{aligned}\relax
+            [t] &= 1 \\
+            \beta [t][N]^{\alpha-1} &= 1
+        \end{aligned}
+        \]
+        
+        Solving these equations:
+        
+        \[
+        \begin{aligned}\relax
+            [t] &= 1 \\
+            [N] &= \left(\frac{1}{\beta}\right)^{\frac{1}{\alpha-1}}
+        \end{aligned}
+        \]
+        
+        Let \(y = N^*\). Then the scaled equation becomes:
+        
+        \[
+        \frac{dy}{dt} = \mu y - y^\alpha
+        \]
+
+
+        
+        \item \textbf{Bifurcation Analysis}
+        
+        For \( \alpha = 3 \):
+        \[
+        \frac{dy}{dt} = \mu y - y^3
+        \]
+        
+        Equilibrium Points:
+        \[
+        \mu y - y^3 = 0 \implies y(\mu - y^2) = 0
+        \]
+        So:
+        \[
+        y = 0, \quad y = \sqrt{\mu}, \quad y = -\sqrt{\mu}
+        \]
+        
+        Stability Analysis:
+        
+        \[
+        f(y) = \mu y - y^3, \quad f'(y) = \mu - 3y^2
+        \]
+        
+        - At \( y = 0 \):
+          \[
+          f'(0) = \mu
+          \]
+          If \( \mu > 0 \), \( y = 0 \) is unstable. If \( \mu < 0 \), \( y = 0 \) is stable.
+          
+        - At \( y = \sqrt{\mu} \):
+          \[
+          f'\left(\sqrt{\mu}\right) = \mu - 3(\mu) = -2\mu
+          \]
+          If \( \mu > 0 \), \( y = \sqrt{\mu} \) is stable. If \( \mu < 0 \), \( y = \sqrt{\mu} \) is unstable.
+        
+          - At \( y = -\sqrt{\mu} \):
+          \[
+          f'\left(-\sqrt{\mu}\right) = \mu - 3(\mu) = -2\mu
+          \]
+          If \( \mu > 0 \), \( y = -\sqrt{\mu} \) is stable. If \( \mu < 0 \), \( y = -\sqrt{\mu} \) is unstable.
+        
+          Bifurcation Diagram:
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.5\textwidth]{bifurcation.pdf}
+            \caption{Bifurcation Diagram}
+        \end{figure}
+        
+    \end{enumerate}
+\end{solution}
+
+
+
+\end{document}
+
+
+        
+        

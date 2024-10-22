@@ -1,0 +1,129 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usepackage{float}
+\usepackage{graphicx}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\rng}{rng}
+\DeclareMathOperator{\norm}{||}
+\DeclareMathOperator{\NN}{\mathbb{N}}
+\DeclareMathOperator{\ZZ}{\mathbb{Z}}
+\DeclareMathOperator{\QQ}{\mathbb{Q}}
+\DeclareMathOperator{\RR}{\mathbb{R}}
+\DeclareMathOperator{\CC}{\mathbb{C}}
+
+% Page setup
+\setlength{\headheight}{15pt}
+\geometry{letterpaper, margin=1in}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textbf{Sebastian Griego}}  % Replace with your name
+\fancyhead[C]{\textbf{Math Modeling}}  % Replace with your course name
+\fancyhead[R]{\textbf{Midterm 1}}  % Replace with your assignment number
+\fancyfoot[C]{\thepage}
+
+\newenvironment{problem}[1]{
+    \textbf{Problem #1:}
+}{
+    \rmfamily \vspace{1em}
+}
+
+\newenvironment{solution}{
+    \textbf{Solution:}
+    
+}{
+    
+    \vspace{2em}
+}
+
+\begin{document}
+
+\title{Midterm 1}  % Replace with the homework number
+\author{Sebastian Griego}  % Replace with your name
+
+
+\begin{problem}{2}
+    For a given model equation:
+    \[
+        \frac{dN(t)}{dt} = r_B N(t) e^{-\Psi r_B(N(t))} - B\frac{N(t)}{A + N(t)}
+    \]
+    perform dimensional analysis to reduce the equation to the form 
+    \[
+        \frac{du}{d\tau} = r u e^{-qu} - \frac{u}{1 + u}
+    \]
+    Use graphical techniques to perform the stability analysis and the bifurcation analysis with the parameter \( q \) fixed and the parameter \( r \) as a bifurcation parameter. Also sketch the bifurcation diagram.
+\end{problem}
+
+\begin{solution}
+    Let \( N = [N]N^* \) and \( t = [t]t^* \). Then,
+    \[
+        \begin{aligned}
+            \frac{[N]}{[t]} \frac{dN^*}{dt^*} &= r_B [N]N^* e^{-\Psi r_B [N]N^*} - B \frac{[N]N^*}{A + [N]N^*} \\
+            \frac{dN^*}{dt^*} &= [t]r_B N^* e^{-\Psi r_B [N]N^*} - \frac{B [t]N^*}{A + [N]N^*}
+        \end{aligned}
+    \]
+    Set:
+    \[
+        \begin{aligned}
+            [N] &= A \\
+            [t] &= \frac{A}{B}
+        \end{aligned}
+    \]
+    
+    Substituting these values:
+    \[
+        \begin{aligned}
+            \frac{dN^*}{dt^*} &= \frac{r_B A}{B} N^* e^{-\Psi r_B A N^*} - \frac{B \frac{A}{B} N^*}{A + A N^*} \\
+            &= \frac{r_B A}{B} N^* e^{-\Psi r_B A N^*} - \frac{N^*}{1 + N^*}
+        \end{aligned}
+    \]
+    
+    Let \( u = N^* \), \( \tau = t^* \), \( r = \frac{r_B A}{B} \), and \( q = \Psi r_B A \). Then:
+    \[
+        \frac{du}{d\tau} = r u e^{-qu} - \frac{u}{1 + u}
+    \]
+    
+    \textbf{Stability and Bifurcation Analysis:}
+    
+    Set:
+    \[
+        r u e^{-qu} - \frac{u}{1 + u} = 0
+    \]
+    
+    Trivial equilibrium is \( u = 0 \). For non-trivial equilibria:
+    \[
+        r e^{-qu} = \frac{1}{1 + u}
+    \]
+    
+    Let:
+    \[
+        \begin{aligned}
+            f(u) &= r e^{-qu} \\
+            g(u) &= \frac{1}{1 + u}
+        \end{aligned}
+    \]
+    
+    The intersections of these curves give the equilibrium points.
+    
+    1. For \( r < 1 \), there's only one intersection at \( u = 0 \).
+    
+    2. For \( r > 1 \), there are two equilibria: 0 and \(u^* > 0\).
+    
+    Here is the picture. These are the graphs with \(u\) factored out from the equations. In it, I found that \(0\) is unstable and \(u^* > 0\) is stable.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.5\textwidth]{mid12.pdf}
+        \caption{Bifurcation Diagram}
+    \end{figure}
+\end{solution}
+
+\end{document}
+
+
