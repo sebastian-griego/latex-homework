@@ -1,0 +1,453 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usepackage{float}
+\usepackage{graphicx}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\rng}{rng}
+\DeclareMathOperator{\norm}{||}
+\DeclareMathOperator{\NN}{\mathbb{N}}
+\DeclareMathOperator{\ZZ}{\mathbb{Z}}
+\DeclareMathOperator{\QQ}{\mathbb{Q}}
+\DeclareMathOperator{\RR}{\mathbb{R}}
+\DeclareMathOperator{\CC}{\mathbb{C}}
+
+% Page setup
+\setlength{\headheight}{15pt}
+\geometry{letterpaper, margin=1in}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textbf{Sebastian Griego}}  % Replace with your name
+\fancyhead[C]{\textbf{ODEs}}  % Replace with your course name
+\fancyhead[R]{\textbf{Assignment \#6}}  % Replace with your assignment number
+\fancyfoot[C]{\thepage}
+
+\newenvironment{problem}[1]{
+    \textbf{Problem #1:}
+}{
+    \rmfamily \vspace{1em}
+}
+
+\newenvironment{solution}{
+    \textbf{Solution:}
+    
+}{
+    
+    \vspace{2em}
+}
+
+\begin{document}
+
+\title{Homework \#6}  % Replace with the homework number
+\author{Sebastian Griego}  % Replace with your name
+\maketitle
+
+
+\begin{problem}{1}
+    Given a transfer function \(\hat{G}(s),\) let \((\tilde{A}, \tilde{B}, \tilde{C}, \tilde{D})\) be a realization
+    for its transpose \(\tilde{G}(s) := \hat{G}(a)^T\). Show that \((A, B, C, D)\) is a realization for \(\hat{G}(s)\) with
+    \[
+        A = \tilde{A}^T, \quad B = \tilde{C}^T, \quad C = \tilde{B}^T, \quad D = \tilde{D}^T
+    \]
+\end{problem}
+
+\begin{solution}
+    \((\tilde{A}, \tilde{B}, \tilde{C}, \tilde{D})\) is a realization for \(\tilde{G}(s) := \hat{G}(s)^T\). So
+    \[
+        \begin{aligned}
+            \hat{G}(s)^T &= \tilde{C}(s - \tilde{A})^{-1}\tilde{B} + \tilde{D} \\
+            (\hat{G}(s)^T)^T &= (\tilde{C}(s - \tilde{A})^{-1}\tilde{B} + \tilde{D})^T \\
+            \hat{G}(s) &= (\tilde{C}(s - \tilde{A})^{-1}\tilde{B})^T + \tilde{D}^T \\
+            \hat{G}(s) &= \tilde{B}^T(s - \tilde{A}^T)^{-1}\tilde{C}^T + \tilde{D}^T, \quad sI\text{ is diagonal so the transpose does not change anything} \\
+            \hat{G}(s) &= C(s - A)^{-1}B + D
+        \end{aligned}
+    \]
+    
+\end{solution}
+
+\newpage
+
+\begin{problem}{2}
+    \begin{enumerate}[label=(\alph*)]
+        \item Compute the controllable canonical form realization for the transfer function
+        \[
+            \hat{g}(s) = \frac{k}{s^n + \alpha_1s^{n-1} + \cdots + \alpha_{n-1}s + \alpha_n}
+        \]
+        \item For the realization in (a), compute the transfer function from the input \(u\) to the new output \(y = x_i\), where \(x_i\) is the \(i\)th element of the state \(x\).
+        \item  Compute the controllable canonical form realization for the transfer function:
+        \[
+            \hat{g}(s) = \frac{\beta_1s^{n-1} + \beta_2s^{n-2} + \cdots + \beta_{n-1}s + \beta_n}{s^n + \alpha_1s^{n-1} + \cdots + \alpha_{n-1}s + \alpha_n}
+        \]
+    \end{enumerate}
+\end{problem}
+
+\begin{solution}
+    \begin{enumerate}[label=(\alph*)]
+        \item \(\hat{g}(s)\) is \(1 \times 1\), \(A\) has to be \(n \times n\) because of the \(\alpha\)'s. So \(C\) has to be \(1 \times n\) and \(B\) has to be \(n \times 1\).
+        \[
+            \hat{g}(s) = \frac{1}{d(s)} (k)
+        \]
+        Using the known matrices:
+        \[
+            \begin{aligned}
+                A &= \begin{pmatrix}
+                    -\alpha_1 & -\alpha_2 & -\alpha_3 & \cdots & -\alpha_n \\
+                    1 & 0 & 0 & \cdots & 0 \\
+                    0 & 1 & 0 & \cdots & 0 \\
+                    \vdots & \cdots & \ddots & \ddots & \vdots \\
+                    0 & \cdots & 0 & 1 & 0 \\
+                \end{pmatrix}\\
+                B &= \begin{pmatrix}
+                    1 \\
+                    0 \\
+                    0 \\
+                    \vdots \\
+                    0 \\
+                \end{pmatrix}\\
+                C &= \begin{pmatrix}
+                    0 & 0 & \cdots & 0 & k
+                \end{pmatrix}\\
+                D &= \begin{pmatrix}
+                    0
+                \end{pmatrix}
+            \end{aligned}
+        \]
+        \item State-space system:
+        \[
+            \begin{aligned}
+                \dot{x} &= Ax + Bu \\
+                y &= Cx + Du
+            \end{aligned}
+        \]
+        For the new output \(y = x_i\), we need to modify the output matrix \(C\) to select the \(i\)th state. The new \(C\) matrix, denoted as \(C_i\), will be:
+        \[
+            C_i = \begin{pmatrix}
+                0 & 0 & \cdots & 0 & 1 & 0 & \cdots & 0
+            \end{pmatrix}
+        \]
+        where the 1 is in the \(i\)th position. The new transfer function from the input \(u\) to the output \(y = x_i\) is given by:
+        \[
+            \hat{G}_i(s) = C_i(s - A)^{-1}B + D
+        \]
+        Substituting the known matrices \(A\), \(B\), \(C_i\), and \(D\), we get:
+        \[
+            \hat{G}_i(s) = \begin{pmatrix}
+                0 & 0 & \cdots & k
+            \end{pmatrix}
+            \begin{pmatrix}
+                s + \alpha_1 & \alpha_2 & \alpha_3 & \cdots & \alpha_n \\
+                -1 & s & 0 & \cdots & 0 \\
+                0 & -1 & s & \cdots & 0 \\
+                \vdots & \cdots & \ddots & \ddots & \vdots \\
+                0 & \cdots & 0 & -1 & s
+            \end{pmatrix}^{-1}
+            \begin{pmatrix}
+                1 \\
+                0 \\
+                0 \\
+                \vdots \\
+                0
+            \end{pmatrix}
+        \]
+        \item Like before but with \(\beta\)'s,
+        \[
+            \begin{aligned}
+                A &= \begin{pmatrix}
+                    -\alpha_1 & -\alpha_2 & -\alpha_3 & \cdots & -\alpha_n \\
+                    1 & 0 & 0 & \cdots & 0 \\
+                    0 & 1 & 0 & \cdots & 0 \\
+                    \vdots & \cdots & \ddots & \ddots & \vdots \\
+                    0 & \cdots & 0 & 1 & 0 \\
+                \end{pmatrix}\\
+                B &= \begin{pmatrix}
+                    1 \\
+                    0 \\
+                    0 \\
+                    \vdots \\
+                    0 \\
+                \end{pmatrix}\\
+                C &= \begin{pmatrix}
+                    \beta_1 & \beta_2 & \cdots & \beta_{n-1} & \beta_n
+                \end{pmatrix}\\
+                D &= \begin{pmatrix}
+                    0
+                \end{pmatrix}
+            \end{aligned}
+        \]
+        \item Transpose and swap some stuff:
+        \[
+            \begin{aligned}
+                A &= \begin{pmatrix}
+                    -\alpha_1 & 1 & 0 & \cdots & 0 \\
+                    -\alpha_2 & 0 & 1 & \cdots & 0 \\
+                    -\alpha_3 & 0 & 0 & \cdots & 0 \\
+                    \vdots & \vdots & \vdots & \ddots & \vdots \\
+                    -\alpha_n & 0 & 0 & \cdots & 0 \\
+                \end{pmatrix}\\
+                B &= \begin{pmatrix}
+                    \beta_1 \\
+                    \beta_2 \\
+                    \vdots \\
+                    \beta_n
+                \end{pmatrix}\\
+                C &= \begin{pmatrix}
+                    1 & 0 & 0 & \cdots & 0
+                \end{pmatrix}\\
+                D &= \begin{pmatrix}
+                    0
+                \end{pmatrix}
+            \end{aligned}
+        \]
+    \end{enumerate}
+\end{solution}
+
+\newpage
+
+\begin{problem}{3}
+    Consider the following two systems:
+    \[
+        \begin{aligned}
+            \dot{x} &= \begin{pmatrix}
+                2 & 1 & 2 \\
+                0 & 2 & 2 \\
+                0 & 0 & 1
+            \end{pmatrix}x + \begin{pmatrix}
+                1 \\
+                1 \\
+                0
+            \end{pmatrix}u, \quad y = \begin{pmatrix}
+                1 & -1 & 0
+            \end{pmatrix}x \\
+            \dot{x} &   = \begin{pmatrix}
+                2 & 1 & 1 \\
+                0 & 2 & 1 \\
+                0 & 0 & -1
+            \end{pmatrix}x + \begin{pmatrix}
+                1 \\
+                1 \\
+                0
+            \end{pmatrix}u, \quad y = \begin{pmatrix}
+                1 & -1 & 0
+            \end{pmatrix}x
+        \end{aligned}
+    \]
+    \begin{enumerate}[label=(\alph*)]
+        \item Are these systems zero-state equivalent?
+        \item Are they algebraically equivalent?
+    \end{enumerate}
+\end{problem}
+
+\begin{solution}
+    \[
+        \begin{aligned}
+            A &= \begin{pmatrix}
+                2 & 1 & 2 \\
+                0 & 2 & 2 \\
+                0 & 0 & 1
+            \end{pmatrix}\\
+            B &= \begin{pmatrix}
+                1 \\
+                1 \\
+                0
+            \end{pmatrix}\\
+            C &= \begin{pmatrix}
+                1 & -1 & 0
+            \end{pmatrix}\\
+            D &= \begin{pmatrix}
+                0
+            \end{pmatrix}
+        \end{aligned}
+    \]
+    Compute:
+    \[
+        \begin{aligned}
+            \hat{g}_1(s) &= C(s - A)^{-1}B + D \\
+            &=\begin{pmatrix}
+                1 & -1 & 0
+            \end{pmatrix}
+            \begin{pmatrix}
+                s - 2 & -1 & -2 \\
+            0 & s - 2 & -2 \\
+                0 & 0 & s - 1
+            \end{pmatrix}^{-1}
+            \begin{pmatrix}
+                1 \\
+                1 \\
+                0
+            \end{pmatrix}\\
+            &= \frac{1}{(s-2)^2}
+        \end{aligned}
+    \]
+    The other one:
+    \[
+        \begin{aligned}
+            \hat{g}_2(s) &= C(s - A)^{-1}B + D \\
+            &=\begin{pmatrix}
+                1 & -1 & 0
+            \end{pmatrix}
+            \begin{pmatrix}
+                s - 2 & -1 & -1 \\
+            0 & s - 2 & -1 \\
+                0 & 0 & s + 1
+            \end{pmatrix}^{-1}
+            \begin{pmatrix}
+                1 \\
+                1 \\
+                0
+            \end{pmatrix}\\
+            &= \frac{1}{(s-2)^2}
+        \end{aligned}
+    \]
+    They are zero-state equivalent. They are not algebraically equivalent because the eigenvalues are different.
+
+\end{solution}
+
+\newpage
+
+\begin{problem}{4}
+    Consider the following system:
+    \[
+        \dot{x} = Ax + Bu, \quad y = Cx
+    \]
+    with
+    \[
+        A = \begin{pmatrix}
+            0 & 1 \\
+            0 & 0
+        \end{pmatrix}, \quad B = \begin{pmatrix}
+            0 \\
+            1
+        \end{pmatrix}, \quad C = \begin{pmatrix}
+            1 & 1
+        \end{pmatrix}
+    \]
+    and the feedback state control
+    \[
+        u = - \begin{pmatrix}
+            f_1 & f_2
+        \end{pmatrix}x + v
+    \]
+    where \(v\) denotes a disturbance input and \(f_1\) and \(f_2\) two scalar constants to be
+    specified later.
+    \begin{enumerate}[label=(\alph*)]
+        \item Compute the close-loop state-space model with input \(v\) and output \(y\),
+        leaving your answer as a function of the constants \(f_1\) and \(f_2\).
+        \item Compute the closed loop transfer function from \(v\) to \(y\), leaving your answer as a function of the constants \(f_1\) and \(f_2\).
+        \item Determine values for \(f_1\) and \(f_2\) so as to obtain the following transfer function from \(v\) to \(y\):
+        \[
+            \frac{1}{s+1}
+        \]
+    \end{enumerate}
+\end{problem}
+
+\begin{solution}
+    \begin{enumerate}[label=(\alph*)]
+        \item
+        \[
+            \begin{aligned}
+                \dot{x} &= Ax + Bu \\
+                &= Ax + B(-Fx + v) \\
+                &= (A-BF)x + Bv \\
+                &= \begin{pmatrix}
+                    0 & 1 \\
+                    0 & 0
+                \end{pmatrix}x - \begin{pmatrix}
+                    0 \\
+                    1
+                \end{pmatrix}
+                \begin{pmatrix}
+                    f_1 & f_2
+                \end{pmatrix}x + \begin{pmatrix}
+                    0 \\
+                    1
+                \end{pmatrix}v \\
+                &= \begin{pmatrix}
+                    0 & 1 \\
+                    -f_1 & -f_2
+                \end{pmatrix}x + \begin{pmatrix}
+                    0 \\
+                    1
+                \end{pmatrix}v
+            \end{aligned}
+        \]
+        
+        The output equation remains:
+        \[
+            y = Cx = \begin{pmatrix} 1 & 1 \end{pmatrix}x
+        \]
+        
+        Therefore, the closed-loop state-space model is:
+        \[
+            \begin{aligned}
+                \dot{x} &= \begin{pmatrix}
+                    0 & 1 \\
+                    -f_1 & -f_2
+                \end{pmatrix}x + \begin{pmatrix}
+                    0 \\
+                    1
+                \end{pmatrix}v \\
+                y &= \begin{pmatrix} 1 & 1 \end{pmatrix}x
+            \end{aligned}
+        \]
+
+    \item
+    New transfer function:
+    \[
+        G(s) = C(s - (A - BF))^{-1}B
+    \]
+    Find \( (s - (A - BF)) \):
+    \[
+        s - (A - BF) = \begin{pmatrix}
+            s & 0 \\
+            0 & s
+        \end{pmatrix} - \begin{pmatrix}
+            0 & 1 \\
+            -f_1 & -f_2
+        \end{pmatrix} = \begin{pmatrix}
+            s & -1 \\
+            f_1 & s + f_2
+        \end{pmatrix}
+    \]
+    New transfer function:
+    \[
+        G(s) = \begin{pmatrix}
+            1 & 1
+        \end{pmatrix}
+        \begin{pmatrix}
+            s & -1 \\
+            f_1 & s + f_2
+        \end{pmatrix}^{-1}
+        \begin{pmatrix}
+            0 \\
+            1
+        \end{pmatrix}
+    \]
+
+    Simplify:
+    \[
+        G(s) =  \frac{s + 1}{s^2 + f_2s + f_1}
+    \]  
+    \item 
+    \[
+        \begin{aligned}
+            \frac{s + 1}{s^2 + f_2s + f_1} &= \frac{1}{s + 1} \\
+            s^2 + 2s + 1 &= s^2 + f_2s + f_1 \\
+        \end{aligned}
+    \]
+    So,
+    \[
+        f_1 = 1, \quad f_2 = 2
+    \]
+    \end{enumerate}
+\end{solution}
+
+
+
+\end{document}
