@@ -1,0 +1,270 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usepackage{float}
+\usepackage{graphicx}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\rng}{rng}
+\DeclareMathOperator{\NN}{\mathbb{N}}
+\DeclareMathOperator{\ZZ}{\mathbb{Z}}
+\DeclareMathOperator{\QQ}{\mathbb{Q}}
+\DeclareMathOperator{\RR}{\mathbb{R}}
+\DeclareMathOperator{\CC}{\mathbb{C}}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+
+
+% Page setup
+\setlength{\headheight}{15pt}
+\geometry{letterpaper, margin=1in}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textbf{Sebastian Griego}}  % Replace with your name
+\fancyhead[C]{\textbf{ODEs}}  % Replace with your course name
+\fancyhead[R]{\textbf{Assignment \#9}}  % Replace with your assignment number
+\fancyfoot[C]{\thepage}
+
+\newenvironment{problem}[1]{
+    \textbf{Problem #1:}
+}{
+    \rmfamily \vspace{1em}
+}
+
+\newenvironment{solution}{
+    \textbf{Solution:}
+    
+}{
+    
+    \vspace{2em}
+}
+
+\begin{document}
+
+\title{Homework \#9}  % Replace with the homework number
+\author{Sebastian Griego}  % Replace with your name
+\maketitle
+
+    As in lecture, we look at the problem
+    \[
+        \dot{x} = (A_0 + f(t)A_1)x, \quad x(t_0) = x_0 \tag{1}
+    \]
+    where \(f(t) > 0\) and we further suppose that \(\exists \beta > 0\) such that
+    \[
+        \forall(t, t_0) \quad t \geq t_0, \quad \int_{t_0}^t f(s)ds \leq \beta \tag{2}
+    \]
+    Note, if we take \(t \to \infty\), we see the requirement on \(f(t)\) becomes
+    \[
+        \int_{t_0}^{\infty} f(s)ds \leq \beta,
+    \]
+    so we see that \(f(t) \to 0\) as \(t \to \infty\).
+
+    We now further suppose that \(A_0\) is a stability matrix, meaning that for every eigenvalue \(\lambda\) of \(A\), \(Re\{\lambda\} < 0\). As we know, this leads to exponential stability by way of the fact that there exist positive constants \(\tilde{c}, \tilde{\lambda}\) such that
+    \[
+        \norm{e^{A_0(t-t_0)}} \leq \tilde{c}e^{-\tilde{\lambda}(t-t_0)}
+    \]
+
+    We now show that Equation (1) has a solution such that there exists \(\tilde{t}_0 > 0\) and positive constants \(\tilde{C}, \hat{\lambda}\) such that for \(t \geq \tilde{t}_0\) we have
+    \[
+        \norm{x(t)} \leq \tilde{C}e^{-\hat{\lambda}(t-\tilde{t}_0)}\norm{x(\tilde{t}_0)}
+    \]
+
+    To do this, show that:
+
+\newpage
+
+\begin{problem}{1}
+    For any real symmetric matrix \(A = O\Lambda O^T\) that
+    \[
+        \langle Ax, x \rangle \leq \max_j \lambda_j \norm{x}^2
+        \]
+    where \(\lambda_j\) is an eigenvalue of \(A\), or a diagonal entry of \(\Lambda\).
+\end{problem}
+
+\begin{solution}
+\[
+    \begin{aligned}
+        \langle Ax, x \rangle &= \langle O\Lambda O^T x, x \rangle \\
+        &= \langle \Lambda O^T x, O^T x \rangle \\
+        &= \langle \Lambda y, y \rangle \\
+        &= \sum_{i=1}^n \lambda_i y_i^2 \\
+        &\leq \max_j \lambda_j \sum_{i=1}^n y_i^2 \\
+        &= \max_j \lambda_j \norm{x}^2
+    \end{aligned}
+\]
+\end{solution}
+
+\newpage
+
+\begin{problem}{2}
+    There exists a positive definite matrix \(P\) such that
+    \[
+        A_0^T P + PA_0 = -Q < 0,
+    \]
+    and if we define \(E(t) = \langle Px(t), x(t) \rangle\) then
+    \[
+        \frac{dE}{dt} = -\langle Qx, x \rangle + f(t)\langle(A_1^T P + PA_1)x, x \rangle.
+    \]
+\end{problem}
+
+\begin{solution}
+\(A\) is positive definite, so by definition, there exists,
+\[
+    A_0^T P + PA_0 = -Q
+\]
+
+Now,
+\[
+    \begin{aligned}
+        E(t) &= \langle Px, x \rangle \\
+        &= x^TP x\\
+        \frac{dE}{dt} &= \frac{d}{dt}x^TP x \\
+        &= \dot{x}^TP x + x^TP \dot{x} \\
+        &= x^T(A_0 + f(t)A_1)^T P x + x^TP (A_0 + f(t)A_1) x \\
+        &= x^T(A_0^T P + PA_0) x + f(t)x^T(A_1^T P + PA_1) x \\
+        &= -\langle Qx, x \rangle + f(t)\langle (A_1^T P + PA_1)x, x \rangle
+    \end{aligned}
+\]
+
+\end{solution}
+
+\newpage
+
+\begin{problem}{3}
+There exists a constant \(\gamma\) (could have any sign or even be zero) such that
+\[
+    \langle (A_1^T P + PA_1)x, x \rangle \leq \gamma \norm{x}^2
+\]
+\end{problem}
+
+\begin{solution}
+\[
+    \begin{aligned}
+        \langle (A_1^T P + PA_1)x, x \rangle &= \langle O \Lambda O^T x, x \rangle \\
+        &= \langle \Lambda O^T x, O^T x \rangle \\
+        &= \langle \Lambda y, y \rangle \\
+        &= \sum_{i=1}^n \lambda_i y_i^2 \leq \max_j \lambda_j \norm{y}^2 \leq \max_j \lambda_j \norm{x}^2
+    \end{aligned}
+\]
+Here \(\gamma = \max_j \lambda_j\) from the problem statement.
+\end{solution}
+
+\newpage
+
+\begin{problem}{4}
+Given the inequalities
+\[
+    \begin{aligned}
+        0 &< \lambda^{(Q)}_m \\
+        \lambda^{(Q)}_m \norm{x}^2 &\leq \langle Qx, x \rangle \leq \lambda^{(Q)}_M \norm{x}^2 \\
+        0 &< \lambda^{(P)}_m \\
+        \lambda^{(P)}_m \norm{x}^2 &\leq \langle Px, x \rangle \leq \lambda^{(P)}_M \norm{x}^2
+    \end{aligned}
+\]
+show that there exists some time \(\tilde{t}_0\) such that for \(t \geq \tilde{t}_0\),
+\[
+    \frac{dE}{dt} \leq -\frac{1}{\lambda^{(P)}_M}\left(\lambda^{(Q)}_m - \gamma f(t)\right)E(t).
+\]
+Remember, we know that \(\lim_{t \to \infty} f(t) = 0\).
+\end{problem}
+
+\begin{solution}
+    Remember:
+    \[
+        \frac{dE}{dt} = -\langle Qx, x \rangle + f(t)\langle (A_1^T P + PA_1)x, x \rangle
+    \]
+    Now,
+    \[
+        \begin{aligned}
+            \frac{dE}{dt} &\leq -\langle Qx, x \rangle + \gamma f(t) \norm{x}^2 \\
+            & \leq -\lambda^{(Q)}_m \norm{x}^2 + \gamma f(t) \norm{x}^2 \\
+            & \leq \left(-\lambda^{(Q)}_m + \gamma f(t)\right) \norm{x}^2
+        \end{aligned}
+    \]
+    \(f(t)\) goes to \(0\), so we don't need to worry about the \(\gamma f(t)\) term messing with signs.
+    Also,
+    \[
+        -\norm{x}^2 \leq -\frac{\langle Px, x \rangle}{\lambda^{(P)}_M}
+    \]
+    So,
+    \[
+        \left(-\lambda^{(Q)}_m + \gamma f(t)\right) \norm{x}^2 \leq -\frac{\langle Px, x \rangle}{\lambda^{(P)}_M} \left(-\lambda^{(Q)}_m + \gamma f(t)\right)
+    \]
+    So,
+    \[
+        \frac{dE}{dt} \leq -\frac{1}{\lambda^{(P)}_M}\left(\lambda^{(Q)}_m - \gamma f(t)\right)E(t).
+    \]
+\end{solution}
+
+\newpage
+
+\begin{problem}{5}
+The prior inequality becomes
+\[
+    \norm{x(t)}^2 \leq \frac{\lambda^{(P)}_M}{\lambda^{(P)}_m} e^{-\frac{1}{\lambda^{(P)}_M}\left(\lambda^{(Q)}_m(t-\tilde{t}_0) - \gamma\int_{\tilde{t}_0}^t f(s)ds\right)} \norm{x(\tilde{t}_0)}^2
+\]
+\end{problem}
+
+\begin{solution}
+\[
+    \begin{aligned}
+        E(t) &\leq \frac{1}{\lambda^{(P)}_m} e^{-\frac{1}{\lambda^{(P)}_M}\left(\lambda^{(Q)}_m(t-\tilde{t}_0) - \gamma\int_{\tilde{t}_0}^t f(s)ds\right)} E(\tilde{t}_0) \\
+        \lambda^{(P)}_m \norm{x(t)}^2 &\leq \lambda^{(P)}_M e^{-\frac{1}{\lambda^{(P)}_M}\left(\lambda^{(Q)}_m(t-\tilde{t}_0) - \gamma\int_{\tilde{t}_0}^t f(s)ds\right)}\norm{x(\tilde{t}_0)}^2\\
+        \norm{x(t)}^2 &\leq \frac{\lambda^{(P)}_M}{\lambda^{(P)}_m} e^{-\frac{1}{\lambda^{(P)}_M}\left(\lambda^{(Q)}_m(t-\tilde{t}_0) - \gamma\int_{\tilde{t}_0}^t f(s)ds\right)} \norm{x(\tilde{t}_0)}^2
+    \end{aligned}
+\]
+\end{solution}
+
+\newpage
+
+\begin{problem}{6}
+Using Equation (2) and by examining the cases \(\gamma \leq 0\) and \(\gamma > 0\), show that there exist positive constants \(C, \hat{\lambda}\) such that
+\[
+    \norm{x(t)} \leq C e^{-\hat{\lambda}(t-\tilde{t}_0)} \norm{x(\tilde{t}_0)}
+\]
+Thus we have shown that the LTV system in Equation (1) inherits the exponential stability from \(A_0\) since \(f(t) \to 0\) as \(t \to \infty\).
+\end{problem}
+
+\begin{solution}
+    Case 1: \(\gamma \leq 0\)
+    
+    In this case, \(-\gamma f(t) \geq 0\) for all \(t\), so we can just ignore the \(-\gamma f(t)\) term.
+    \[
+        \begin{aligned}
+            \norm{x(t)}^2 &\leq \frac{\lambda^{(P)}_M}{\lambda^{(P)}_m} e^{-\frac{\lambda^{(Q)}_m}{\lambda^{(P)}_M}(t-\tilde{t}_0)} \norm{x(\tilde{t}_0)}^2\\
+            \norm{x(t)} &\leq \sqrt{\frac{\lambda^{(P)}_M}{\lambda^{(P)}_m}} e^{-\frac{\lambda^{(Q)}_m}{2\lambda^{(P)}_M}(t-\tilde{t}_0)} \norm{x(\tilde{t}_0)}
+        \end{aligned}
+    \]
+    
+    Case 2: \(\gamma > 0\)
+    
+    Since \(f(t) \to 0\) as \(t \to \infty\), there exists \(T > 0\) such that \(|f(t)| < \frac{\lambda^{(Q)}_m}{2\gamma}\) for all \(t > T\).
+    
+    Therefore, for \(t > T\):
+    \[
+        \begin{aligned}
+            \gamma\int_{\tilde{t}_0}^t f(s)ds &= \gamma\int_{\tilde{t}_0}^T f(s)ds + \gamma\int_T^t f(s)ds \\
+            &\leq \gamma M + \gamma\int_T^t \frac{\lambda^{(Q)}_m}{2\gamma}ds \\
+            &= \gamma M + \frac{\lambda^{(Q)}_m}{2}(t-T)
+        \end{aligned}
+    \]
+    where \(M = \int_{\tilde{t}_0}^T |f(s)|ds\).
+    
+    Then,
+    \[
+        \begin{aligned}
+            \norm{x(t)}^2 &\leq \frac{\lambda^{(P)}_M}{\lambda^{(P)}_m} e^{-\frac{1}{\lambda^{(P)}_M}\left(\lambda^{(Q)}_m(t-\tilde{t}_0) - \gamma M - \frac{\lambda^{(Q)}_m}{2}(t-T)\right)} \norm{x(\tilde{t}_0)}^2 \\
+            &= \frac{\lambda^{(P)}_M}{\lambda^{(P)}_m} e^{-\frac{\lambda^{(Q)}_m}{2\lambda^{(P)}_M}(t-\tilde{t}_0)} e^{\frac{\gamma M}{\lambda^{(P)}_M}} \norm{x(\tilde{t}_0)}^2 \\
+            \norm{x(t)} &\leq \sqrt{\frac{\lambda^{(P)}_M}{\lambda^{(P)}_m}} e^{\frac{\gamma M}{2\lambda^{(P)}_M}} e^{-\frac{\lambda^{(Q)}_m}{4\lambda^{(P)}_M}(t-\tilde{t}_0)} \norm{x(\tilde{t}_0)}
+        \end{aligned}
+    \]
+\end{solution}
+
+
+
+\end{document}
