@@ -1,0 +1,477 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usepackage{float}
+\usepackage{graphicx}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\rng}{rng}
+\DeclareMathOperator{\NN}{\mathbb{N}}
+\DeclareMathOperator{\ZZ}{\mathbb{Z}}
+\DeclareMathOperator{\QQ}{\mathbb{Q}}
+\DeclareMathOperator{\RR}{\mathbb{R}}
+\DeclareMathOperator{\CC}{\mathbb{C}}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+
+
+% Page setup
+\setlength{\headheight}{15pt}
+\geometry{letterpaper, margin=1in}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textbf{Sebastian Griego}}  % Replace with your name
+\fancyhead[C]{\textbf{ODEs}}  % Replace with your course name
+\fancyhead[R]{\textbf{Assignment \#10}}  % Replace with your assignment number
+\fancyfoot[C]{\thepage}
+
+\newenvironment{problem}[1]{
+    \textbf{Problem #1:}
+}{
+    \rmfamily \vspace{1em}
+}
+
+\newenvironment{solution}{
+    \textbf{Solution:}
+    
+}{
+    
+    \vspace{2em}
+}
+
+\begin{document}
+
+\title{Homework \#10}  % Replace with the homework number
+\author{Sebastian Griego}  % Replace with your name
+\maketitle
+
+\begin{problem}{1}
+Consider the continuous-time LTI system
+\[
+    \dot{x} = Ax + Bu \quad x \in \RR^n, u \in \RR^k \tag{AB-CLTI}
+\]
+Prove the following two statements:
+\begin{enumerate}[label=(\alph*)]
+    \item The controllable subspace \(\mathcal{C}\) of the system (AB-CLTI) is \(A\)-invariant.
+    \item The controllable subspace \(\mathcal{C}\) of the system (AB-CLTI) contains \(Im (B)\).
+\end{enumerate}
+\end{problem}
+
+\begin{solution}
+    \begin{enumerate}[label=(\alph*)]
+        \item 
+
+        Let \(v \in \mathcal{C}\).
+
+        \[
+            \mathcal{C} = Im(\tilde{C}) \implies \exists x \in \tilde{V} : v = \tilde{C}x.
+        \]
+
+        Then 
+        \[
+            \begin{aligned}
+                Av &= A\tilde{C}x \\
+                &= A \begin{pmatrix}
+                    B & AB & A^2B & \cdots & A^{n-1}B
+                \end{pmatrix} x \\
+                &= \begin{pmatrix}
+                    AB & A^2B & \cdots & A^nB
+                \end{pmatrix} x.
+            \end{aligned}
+        \]
+        By Cayley-Hamilton, \(A^n = \sum_{i=0}^{n-1} a_i A^i\), so
+        \[
+            Av = \begin{pmatrix}
+                AB & A^2B & \cdots & A^{n-1}B & \sum_{i=0}^{n-1} a_i A^{i}B
+            \end{pmatrix} x.
+        \]
+
+        Therefore \(Av \in \mathcal{C}\).
+
+        \item Let \(v \in Im(B)\). Then \(\exists x \in \tilde{V} : v = Bx\).
+
+        Remember that \(\mathcal{C} = Im(\tilde{C})\) and
+
+        \[
+            \tilde{C} = \begin{pmatrix} B & AB & A^2B & \cdots & A^{n-1}B \end{pmatrix}
+        \]
+
+        Then \(v = Bx = \tilde{C}\begin{pmatrix} x \\ 0 \\ 0 \\ \vdots \\ 0 \end{pmatrix}\).
+
+        Therefore, \(v \in Im(\tilde{C}) = \mathcal{C}\).
+
+        Therefore, \(Im(B) \subseteq \mathcal{C}\).
+    \end{enumerate}
+\end{solution}
+
+\newpage
+
+\begin{problem}{2}
+Consider a system in controllable canonical form
+\[
+    A = \begin{bmatrix}
+        -\alpha_1 I_{k\times k} & -\alpha_2 I_{k\times k} & \cdots & -\alpha_{n-1} I_{k\times k} & -\alpha_n I_{k\times k} \\
+        I_{k\times k} & 0_{k\times k} & \cdots & 0_{k\times k} & 0_{k\times k} \\
+        0_{k\times k} & I_{k\times k} & \cdots & 0_{k\times k} & 0_{k\times k} \\
+        \vdots & \vdots & \ddots & \vdots & \vdots \\
+        0_{k\times k} & 0_{k\times k} & \cdots & I_{k\times k} & 0_{k\times k}
+    \end{bmatrix}_{nk\times nk},
+\]
+\[
+    B = \begin{bmatrix}
+        I_{k\times k} \\
+        0_{k\times k} \\
+        \vdots \\
+        0_{k\times k} \\
+        0_{k\times k}
+    \end{bmatrix}_{nk\times k},
+\]
+\[
+    C = \begin{bmatrix}
+        N_1 & N_2 & \cdots & N_{n-1} & N_n
+    \end{bmatrix}_{m\times nk}.
+\]
+Show that such a system is always controllable.
+\end{problem}
+
+\begin{solution}
+    \[
+        \begin{aligned}
+            \tilde{C} &= \begin{pmatrix}
+                B & AB & A^2B & \cdots & A^{n-1}B
+            \end{pmatrix} \\
+            &= \begin{pmatrix}
+                I_{k\times k} & -\alpha_1 I_{k\times k} & (\alpha_1^2 - \alpha_2)I_{k\times k} & \cdots & * \\
+                0_{k\times k} & I_{k\times k} & -\alpha_1 I_{k\times k} & \cdots & * \\
+                0_{k\times k} & 0_{k\times k} & I_{k\times k} & \cdots & * \\
+                \vdots & \vdots & \vdots & \ddots & \vdots \\
+                0_{k\times k} & 0_{k\times k} & 0_{k\times k} & \cdots & I_{k\times k}
+            \end{pmatrix} \\
+        \end{aligned}
+    \]
+    This matrix has full rank since it is triangular with identity matrices on the diagonal. Therefore, the system is controllable.
+\end{solution}
+
+\newpage
+
+\begin{problem}{3}
+Consider the SISO LTI system in controllable canonical form
+\[
+    \dot{x} = Ax + Bu, \quad x \in \RR^n, u \in \RR^1,
+\]
+where
+\[
+    A = \begin{bmatrix}
+        -\alpha_1 & -\alpha_2 & \cdots & -\alpha_{n-1} & -\alpha_n \\
+        1 & 0 & \cdots & 0 & 0 \\
+        0 & 1 & \cdots & 0 & 0 \\
+        \vdots & \vdots & \ddots & \vdots & \vdots \\
+        0 & 0 & \cdots & 1 & 0
+    \end{bmatrix}_{n\times n},
+    \quad
+    B = \begin{bmatrix}
+        1 \\
+        0 \\
+        \vdots \\
+        0 \\
+        0
+    \end{bmatrix}_{n\times 1}.
+\]
+
+\begin{enumerate}[label=(\alph*)]   
+    \item Compute the characteristic polynomial of the closed-loop system for
+    \[
+        u = -Kx, \quad K := \begin{bmatrix} k_1 & k_2 & \cdots & k_n \end{bmatrix}.
+    \]
+    \textit{Hint: Compute the determinant of $(sI - A + BK)$ by doing a Laplace expansion along the first line of this matrix.}
+
+    \item Suppose you are given $n$ complex numbers $\lambda_1, \lambda_2, \ldots, \lambda_n$ as desired locations for the closed-loop eigenvalues. Which characteristic polynomial for the closed-loop system would lead to these eigenvalues?
+
+    \item Based on the answers to parts (a) and (b), propose a procedure to select $K$ that would result in the desired values for the closed-loop eigenvalues.
+    \item Suppose that
+    \[
+        A = \begin{bmatrix}
+            1 & 2 & 3 \\
+            1 & 0 & 0 \\
+            0 & 1 & 0
+        \end{bmatrix}, \quad
+        B = \begin{bmatrix}
+            1 \\
+            0 \\
+            0
+        \end{bmatrix}.
+    \]
+    Find a matrix $K$ for which the closed-loop eigenvalues are $\{-1, -1, -2\}$.
+\end{enumerate}
+\end{problem}
+
+\begin{solution}
+    \begin{enumerate}[label=(\alph*)]
+        \item Find:
+        \[
+            \begin{aligned}
+                \det(sI - A + BK) &= \det\begin{pmatrix}
+                    s + \hat{\alpha}_1 & \hat{\alpha}_2 & \cdots & \hat{\alpha}_{n-1} & \hat{\alpha}_n\\
+                    -1 & s & 0 & \cdots & 0 \\
+                    0 & -1 & s & \ddots & \vdots\\
+                    \vdots & \ddots & \ddots & \ddots & 0\\
+                    0 & \cdots & 0 & -1 & s
+                \end{pmatrix}\\
+                &= s^n + \hat{\alpha}_1 s^{n-1} + \hat{\alpha}_2 s^{n-2} + \cdots + \hat{\alpha}_n\\
+                &= p(s)
+            \end{aligned}
+        \]
+        Matt and I proved this with induction. Here is a sideways picture:
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.5\textwidth]{induc.jpg}
+        \end{figure}
+        \item \(f(s) = (s - \lambda_1)(s - \lambda_2) \cdots (s - \lambda_n)\)
+        \item Match coefficients of \(f(s)\) and \(p(s)\).
+        \item Follow the process of the previous parts.
+        
+        \[
+            A = \begin{bmatrix}
+                1 & 2 & 3 \\
+                1 & 0 & 0 \\
+                0 & 1 & 0
+            \end{bmatrix}, \quad
+            B = \begin{bmatrix}
+                1 \\
+                0 \\
+                0
+            \end{bmatrix}.
+        \]
+        Choose \(K\) such that \(\lambda = \{-1, -1, -2\}\).
+
+        Want \(\det(sI - A + BK) = (s + 1)^2(s + 2) = s^3 + 4s^2 + 5s + 2\).
+
+        Compute \(\det(sI - A + BK) = s^3 + (-1 + k_1)s^2 + (-2 + k_2)s + (-3 + k_3)\).
+
+        Set coefficients equal to get \(k_1 = 5\), \(k_2 = 7\), \(k_3 = 5\).
+        
+        Therefore,
+        \[
+            K = \begin{bmatrix}
+                5 & 7 & 5
+            \end{bmatrix}.
+        \]
+    \end{enumerate}
+\end{solution}
+
+\newpage
+
+\begin{problem}{4}
+The equations of motion of a satellite linearized around a steady-state solution, are given by
+\[
+    \dot{x} = Ax + Bu, \quad A := \begin{bmatrix}
+        0 & 1 & 0 & 0\\
+        3\omega^2 & 0 & 0 & 2\omega\\
+        0 & 0 & 0 & 1\\
+        0 & -2\omega & 0 & 1
+    \end{bmatrix}, \quad B := \begin{bmatrix}
+        0 & 0\\
+        1 & 0\\
+        0 & 0\\
+        0 & 1
+    \end{bmatrix},
+\]
+where the state vector \(x := \begin{bmatrix} x_1 & x_2 & x_3 & x_4 \end{bmatrix}^T\) includes the perturbation \(x_1\) in the orbital radius, the perturbation \(x_2\) in the radial velocity, the perturbation \(x_3\) in the angle, and the perturbation \(x_4\) in the angular velocity; and the input vector \(u := \begin{bmatrix} u_1 & u_2 \end{bmatrix}^T\) includes the radial thruster \(u_1\) and a tangential thruster \(u_2\).
+
+\begin{enumerate}[label=(\alph*)]
+    \item Show that the system is controllable from the input vector \(u\).
+    \item Can the system still be controlled if the radial thruster does not fire? What if it is the tangential thruster that fails?
+\end{enumerate}
+\end{problem}
+
+\begin{solution}
+    \begin{enumerate}[label=(\alph*)]
+        \item Will show \(\tilde{C}\) has full rank.
+        
+        \[
+            \begin{aligned}
+                \tilde{C} &= \begin{pmatrix}
+                    B & AB & A^2B & A^3B
+                \end{pmatrix}\\
+                &= \begin{pmatrix}
+                    0 & 0 & 1 & 0 & \dots\\
+                    1 & 0 & 0 & 2\omega & \dots\\
+                    0 & 0 & 0 & 1 & \dots\\
+                    0 & 1 & -2\omega & 1 & \dots
+                \end{pmatrix}
+            \end{aligned}
+        \]
+        This already has full rank, so the system is controllable.
+
+        \item Consider the eigenvectors of \(A^T\) and \(\ker((Bu)^T)\).
+        
+        \[
+            Bu = \begin{pmatrix}
+                0\\
+                u_1\\
+                0\\
+                u_2
+            \end{pmatrix}
+        \]
+
+        Excuse the notation.
+
+        \[
+            \ker(Bu) = \begin{pmatrix}
+                x_1\\
+                0\\
+                x_3\\
+                0
+            \end{pmatrix}
+        \]
+        One of the eigenvectors of \(A^T\) is \(\begin{pmatrix}
+            2\omega\\
+            0\\
+            -1\\
+            1
+        \end{pmatrix}\).
+
+        As is \(\ker(Bu) \cap v = \{0\}\), so it is controllable.
+
+        If \(u_1 = 0\), then \(\ker(Bu) = \begin{pmatrix}
+            x_1\\
+            x_2\\
+            x_3\\
+            0
+        \end{pmatrix}\).
+
+        In this case, \(\ker(Bu) \cap v = \{0\}\), so it is controllable.
+
+        If \(u_2 = 0\), then \(\ker(Bu) = \begin{pmatrix}
+            x_1\\
+            0\\
+            x_3\\
+            x_4
+        \end{pmatrix}\).
+
+        In this case, \(\ker(Bu) \cap v \neq \{0\}\), so it is uncontrollable.
+    \end{enumerate}
+\end{solution}
+
+\newpage
+
+\begin{problem}{5}
+    Consider an LTI system with realization
+    \[
+        A = \begin{pmatrix}
+            -1 & 0\\
+            0 & -1
+        \end{pmatrix}, \quad
+        B = \begin{pmatrix}
+            -1\\
+            1
+        \end{pmatrix}, \quad
+        C = \begin{pmatrix}
+            1 & 0\\
+            0 & 1
+        \end{pmatrix}, \quad
+        D = \begin{pmatrix}
+            2\\
+            1
+        \end{pmatrix}
+    \]
+    Is this realization controllable? If not, perform a controllable decomposition to obtain a controllable realization of the same transfer function.
+\end{problem}
+
+\begin{solution}
+    \[
+        \tilde{C} = \begin{pmatrix}
+            -1 & 1\\
+            1 & -1
+        \end{pmatrix}
+    \]
+    rank(\(\tilde{C}\)) = 1, so the system is uncontrollable.
+
+    \(\tilde{V} = \begin{pmatrix}
+        -1\\
+        1
+    \end{pmatrix}\).
+    \[
+        \begin{aligned}
+            \dot{\tilde{x}} &= T^{-1}ATx + T^{-1}Bu\\
+            y &= CT(T^{-1}x) + Du
+        \end{aligned}
+    \]
+    So,
+    \[
+        \begin{aligned}
+            \dot{\tilde{x}} &= \begin{pmatrix}
+                A_c & A_{12}\\
+                0 & A_u
+            \end{pmatrix} \tilde{x} + \begin{pmatrix}
+                B_c\\
+                0
+            \end{pmatrix} u\\
+        \end{aligned}
+    \]
+    Find things:
+    \[
+        \begin{aligned}
+            A\tilde{V} &= \begin{pmatrix}
+                1\\
+                -1
+            \end{pmatrix} = \tilde{V} A_c \implies A_c = -1\\
+            B &= \begin{pmatrix}
+                -1\\
+                1
+            \end{pmatrix} = \tilde{V} B_c \implies B_c = 1\\
+            CT &= T = \begin{pmatrix}
+                C_c & C_u
+            \end{pmatrix}
+        \end{aligned}
+    \]
+    Note,
+    \[
+        T = \begin{pmatrix}
+            -1 & 1\\
+            1 & 1
+        \end{pmatrix}
+    \]
+    So,
+    \[
+        C_c = \begin{pmatrix}
+            -1\\
+            1
+        \end{pmatrix}
+    \]
+    Realiation:
+    \[
+        \begin{aligned}
+            \begin{pmatrix} C_c & C_u \end{pmatrix} 
+                (sI - \begin{pmatrix} A_c & A_{12} \\ 0 & A_u \end{pmatrix})^{-1} 
+                \begin{pmatrix} B_c \\ 0 \end{pmatrix} + D 
+            &=\begin{pmatrix} 
+                C_c & C_u 
+            \end{pmatrix} 
+            \begin{pmatrix} 
+                (sI - A_c)^{-1} & \tilde{A}_{21} \\ 
+                0 & (sI - A_u)^{-1} 
+            \end{pmatrix} 
+            \begin{pmatrix} B_c \\ 0 \end{pmatrix} + D \\
+            &= \begin{pmatrix} 
+                C_c & C_u 
+            \end{pmatrix} 
+            \begin{pmatrix} 
+                (sI - A_c)^{-1}B_c \\ 
+                0 
+            \end{pmatrix} + D \\
+            &= C_c (s - A_c)^{-1} B_c + D\\
+            &= \frac{1}{s + 1} \begin{pmatrix} -1 \\ 1 \end{pmatrix} + \begin{pmatrix} 2 \\ 1 \end{pmatrix}.
+        \end{aligned}
+    \]
+
+
+
+\end{solution}
+
+\end{document}

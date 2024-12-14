@@ -1,0 +1,267 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usepackage{float}
+\usepackage{graphicx}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\rng}{rng}
+\DeclareMathOperator{\norm}{||}
+\DeclareMathOperator{\NN}{\mathbb{N}}
+\DeclareMathOperator{\ZZ}{\mathbb{Z}}
+\DeclareMathOperator{\QQ}{\mathbb{Q}}
+\DeclareMathOperator{\RR}{\mathbb{R}}
+\DeclareMathOperator{\CC}{\mathbb{C}}
+
+% Page setup
+\setlength{\headheight}{15pt}
+\geometry{letterpaper, margin=1in}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textbf{Sebastian Griego}}  % Replace with your name
+\fancyhead[C]{\textbf{ODEs}}  % Replace with your course name
+\fancyhead[R]{\textbf{Assignment \#8}}  % Replace with your assignment number
+\fancyfoot[C]{\thepage}
+
+\newenvironment{problem}[1]{
+    \textbf{Problem #1:}
+}{
+    \rmfamily \vspace{1em}
+}
+
+\newenvironment{solution}{
+    \textbf{Solution:}
+    
+}{
+    
+    \vspace{2em}
+}
+
+\begin{document}
+
+\title{Homework \#8}  % Replace with the homework number
+\author{Sebastian Griego}  % Replace with your name
+\maketitle
+
+
+\begin{problem}{1}
+    Prove that when all the eigenvalues of \(A\) have strictly negative real parts,
+    then there exists constants \(c, \lambda > 0\) such that
+    \[
+        \norm{e^{At}} \leq c e^{-\lambda t} \norm, \quad \forall t \in \RR.
+    \]
+\end{problem}
+
+\begin{solution}
+    Let \(\lambda_1, \ldots, \lambda_n\) be the eigenvalues of \(A\). Let
+    \[
+        A = VJV^{-1}, \quad J = \Lambda + N, \quad \Lambda N = N\Lambda, \quad N^p=0
+    \]
+    Note that \(N = 0\) if there is no Jordan form. The proof is the same/simpler.
+
+    Then,
+    \[
+        e^{At} = V e^{\Lambda t}e^{Nt} V^{-1}.
+    \]
+    Define:
+    \[
+        \lambda_m = \min_j |Re(\lambda_j)|
+    \]
+    Then,
+    \[
+        \norm{e^{At}}\norm = \norm{V e^{\Lambda t}e^{Nt} V^{-1}}\norm \leq \norm{V}\norm \cdot \norm V^{-1}\norm \cdot e^{-\lambda_m t} \cdot \norm{e^{Nt}}\norm
+    \]
+    Where:
+    \[
+        \norm{e^{Nt}}\norm = \left\Vert \sum_{j=0}^{p-1} \frac{N^j t^j}{j!} \right\Vert \leq \sum_{j=0}^{p-1} \frac{t^j}{j!} \norm N \norm^j
+    \]
+    Note:
+    \[
+        \norm N \norm = 1 \implies \norm{e^{Nt}}\norm \leq \sum_{j=0}^{p-1} \frac{t^j}{j!}
+    \]
+    Back to the other thing:
+    \[
+            \norm{e^{At}}\norm \leq \norm{V}\norm \cdot \norm V^{-1}\norm \cdot e^{-\lambda_m t} \cdot \sum_{j=0}^{p-1} \frac{t^j}{j!} \\
+    \]
+    We can ignore the \(V\) and \(V^{-1}\) terms because they are constants.
+
+    Define: \(0 < \epsilon < \lambda_m\). This gives:
+    \[
+        e^{-\lambda_m t} = e^{-(\lambda_m - \epsilon + \epsilon)t} = e^{-(\lambda_m - \epsilon)t} \cdot e^{-\epsilon t}
+    \]
+    So,
+    \[
+        \begin{aligned}
+            e^{-\lambda_m t} \cdot \sum_{j=0}^{p-1} \frac{t^j}{j!} &= e^{-(\lambda_m - \epsilon)t} \cdot e^{-\epsilon t} \cdot \sum_{j=0}^{p-1} \frac{t^j}{j!} \\
+            &= e^{-(\lambda_m - \epsilon)t} \left( \sum_{j=0}^{p-1} \frac{t^j}{j! \cdot e^{\epsilon t}} \right)
+        \end{aligned}
+    \]
+    So, you can pick \(\lambda = \lambda_m - \epsilon\) and \(c\) that bounds the sum and \(V\) and \(V^{-1}\) terms such that:
+    \[
+        \norm{e^{At}}\norm \leq c e^{-\lambda t}, \quad \forall t \in \RR
+    \]
+\end{solution}
+
+\newpage
+
+\begin{problem}{2}
+    Verify that \(\left(e^{At}\right)^T = e^{A^T t}\)
+\end{problem}
+
+\begin{solution}
+    Using \((A^k)^T = (A^T)^k\) and \((A + B)^T = A^T + B^T\):
+    \[
+        \begin{aligned}
+            \left(e^{At}\right)^T &= \left(\sum_{j=0}^{\infty} \frac{A^j t^j}{j!}\right)^T \\
+            &= \sum_{j=0}^{\infty} \frac{(A^T)^j t^j}{j!} \\
+            &= e^{A^T t}
+        \end{aligned}
+    \]
+\end{solution}
+
+\newpage
+
+\begin{problem}{3}
+    Consider the continuous-time LTI system
+    \[
+        \dot x = Ax, \quad x \in \RR^n
+    \]
+    and suppose there exists a positive constant \(\mu\) and positive-definite matrices \(P, Q \in \RR^n\) for which the Lyapunov equation
+    \[
+        A^T P + P A + 2\mu P = -Q
+    \]
+    holds. Show that all eigenvalues of \(A\) have real parts less than \(-\mu\).
+\end{problem}
+
+\begin{solution}
+    Given this hint: Start by showing that all eigenvalues of \(A\) have real parts less than \(-\mu\) if and
+    only if all eigenvalues of \(A + \mu I\) have real parts less than 0 (i.e., \(A + \mu I\) is a stability
+    matrix).
+
+    Proof of the hint:
+    \[
+        \begin{aligned}
+            Av &= \lambda v \\
+            Av + \mu v &= \lambda v + \mu v \\
+            (A + \mu I)v &= (\lambda + \mu)v
+        \end{aligned}
+    \]
+    \[
+        Re(\lambda(A)) < -\mu \iff Re(\lambda(A) + \mu) < 0 \iff Re(\lambda(A + \mu I)) < 0
+    \]
+
+    Now the actual problem:
+
+    Set up:
+    \[
+        \begin{aligned}
+            A^T P + P A + 2\mu P &= -Q \\
+            (A + \mu I)^T P + P (A + \mu I) &= -Q
+        \end{aligned}
+    \]
+    Theorem: all evals of \(A + \mu I\) have real parts less than 0. The above hint then gives:
+    \[
+        Re(\lambda(A)) < -\mu \iff Re(\lambda(A + \mu I)) < 0
+    \]
+
+\end{solution}
+
+\newpage
+
+\begin{problem}{4}
+    Consider the system
+    \[
+        \dot x = Ax + Bu, \quad y = Cx
+    \]
+    with
+    \[
+        A := \begin{pmatrix}
+            0 & 1\\
+            -1 & -2 \end{pmatrix}, \quad B := \begin{pmatrix}
+                0\\
+                1
+            \end{pmatrix}
+    \]
+    \begin{enumerate}[label=(\alph*)]
+        \item Given a \(1 \times 2\) matrix \(f:= \begin{pmatrix}
+            f_1 & f_2
+        \end{pmatrix}\), compute the characteristic polynomial of \(A + Bf\)
+        \item Select \(f_1\) and \(f_2\) so that the eigenvalues of \(A + Bf\) are both zero.
+        \item For the matrix \(f\) computed above, is the closed-loop system
+        \[
+            \dot x = (A + Bf)x
+        \]
+        stable?
+    \end{enumerate}
+\end{problem}
+
+\begin{solution}
+    \[
+        \begin{aligned}
+            A + Bf &= \begin{pmatrix}
+                0 & 1\\
+                -1 & -2
+            \end{pmatrix} + \begin{pmatrix}
+                0 & 0\\
+                f_1 & f_2
+            \end{pmatrix} \\
+            &= \begin{pmatrix}
+                0 & 1\\
+                -1 + f_1 & -2 + f_2
+            \end{pmatrix}
+        \end{aligned}
+    \]
+    The characteristic polynomial is
+    \[
+        \begin{aligned}
+            \lambda^2 - (\Tr(A + Bf)) \lambda + \det(A + Bf) &= 0 \\
+            \lambda^2 - (-2 + f_1) \lambda + (1 - f_1) &= 0 \\
+            \lambda^2 - (f_1 - 2) \lambda + (1 - f_2) &= 0\\
+            \lambda &= \frac{1}{2} \left( (f_1 - 2) \pm \sqrt{(f_1 - 2)^2 - 4(1 - f_2)} \right)\\
+            &= \frac{1}{2} \left( f_1 - 2 \pm \sqrt{(f_1^2 - 4f_1 + 4) + 4f_2 - 4} \right)\\
+            &= \frac{1}{2} \left( f_1 - 2 \pm \sqrt{f_1^2 - 4f_1 + 4f_2} \right)
+        \end{aligned}
+    \]
+    To get the eigenvalues to be zero, we need:
+    \[
+        \begin{aligned}
+            f_1^2 - 4f_1 + 4f_2 &= 0 \\
+            f_1 &= 2
+        \end{aligned}
+    \]
+    Solve for \(f_2\):
+    \[
+        \begin{aligned}
+            4 - 8 + 4f_2 &= 0 \\
+            f_2 &= 1
+        \end{aligned}
+    \]
+    So, \(f = \begin{pmatrix}
+        2 & 1
+    \end{pmatrix}\).
+
+    The closed-loop system is:
+    \[
+        \begin{aligned}
+            \dot x &= (A + Bf)x \\
+            &= \begin{pmatrix}
+                0 & 1\\
+                -1 + f_1 & -2 + f_2
+            \end{pmatrix}x\\
+            &= \begin{pmatrix}
+                0 & 1\\
+                1 & -1
+            \end{pmatrix}x
+        \end{aligned}
+    \]
+    The trace and determinant are both negative, so the system is a saddle. So it is not stable.
+\end{solution}
+
+
+\end{document}
